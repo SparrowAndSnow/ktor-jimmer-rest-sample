@@ -1,0 +1,15 @@
+BookView{
+    name
+    edition
+    price
+}
+
+specification BookSpec{
+    like(name)
+}
+
+input BookInput{
+    name
+    edition
+    price
+}
