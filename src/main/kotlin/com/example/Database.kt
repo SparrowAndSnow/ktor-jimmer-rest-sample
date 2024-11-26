@@ -29,7 +29,7 @@ fun database(environment: ApplicationEnvironment): KSqlClient {
 
         when (environment.config.property("datasource.name").getString()) {
             "mysql" -> setDialect(MySqlDialect())
-            "postgres" -> setDialect(PostgresDialect())
+            "postgresql" -> setDialect(PostgresDialect())
         }
     }
 }

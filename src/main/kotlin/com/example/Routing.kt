@@ -1,42 +1,53 @@
 package com.example
 
 import com.example.domain.entity.*
+import com.example.route.Curd.list
+import com.example.route.Curd.id
+import com.example.route.fetcher
+import com.example.route.filter
 import io.ktor.server.application.*
 import io.ktor.server.resources.Resources
-import io.ktor.server.response.*
 import io.ktor.server.routing.*
-import org.babyfish.jimmer.sql.kt.KSqlClient
-import org.babyfish.jimmer.sql.kt.ast.expression.asc
-import org.babyfish.jimmer.sql.kt.ast.expression.desc
+import org.babyfish.jimmer.sql.kt.ast.expression.*
 import org.babyfish.jimmer.sql.kt.fetcher.newFetcher
-import org.koin.ktor.ext.inject
 
 fun Application.configureRouting() {
     install(Resources)
-    val sqlClient by inject<KSqlClient>()
 
     routing {
         route("/book") {
-            get {
-                val list = sqlClient.createQuery(Book::class) {
-                    orderBy(table.price.asc(), table.id.desc())
-                    select(table.fetch(bookFetcher()))
-                }.fetchPage(0, 10)
-                call.respond(list)
+            id<Book>("key") {
+                fetcher(Book::class) {
+                    by {
+                        allScalarFields()
+                        store {
+                            allScalarFields()
+                        }
+                        authors {
+                            allScalarFields()
+                        }
+                        name(false)
+                    }
+                }
             }
 
-            get("/{id}") {
-                call.parameters["id"]?.toLong()?.let {
-                    sqlClient.findById(bookFetcher(), it)?.let {
-                        call.respond(it)
-                    }
+            list<Book> {
+                fetcher(Book::class) {
+                    by { allScalarFields() }
+                }
+                filter {
+                    where(
+                        table.name `like?` call.queryParameters["name"],
+                        table.price `ge?` call.queryParameters["price"]?.toBigDecimal()
+                    )
+                    orderBy(table.price.asc())
                 }
             }
         }
     }
 }
 
-fun bookFetcher() = newFetcher(Book::class).by {
+val bookFetcher = newFetcher(Book::class).by {
     nameUpperCase()
     price()
     env()
