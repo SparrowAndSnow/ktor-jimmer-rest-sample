@@ -2,12 +2,16 @@ package com.example
 
 import io.ktor.server.application.*
 import org.babyfish.jimmer.sql.kt.KSqlClient
-import org.babyfish.jimmer.sql.kt.cfg.KSqlClientDsl
-import org.babyfish.jimmer.sql.kt.newKSqlClient
-import org.babyfish.jimmer.sql.runtime.ConnectionManager
+import org.koin.core.annotation.ComponentScan
+import org.koin.core.annotation.Module
 import org.koin.dsl.module
+import org.koin.ksp.generated.module
 import org.koin.ktor.plugin.Koin
 import org.koin.logger.slf4jLogger
+
+@Module
+@ComponentScan("com.example")
+class ApplicationModule
 
 fun Application.configureFrameworks() {
     install(Koin) {
@@ -16,5 +20,7 @@ fun Application.configureFrameworks() {
             single<ApplicationEnvironment> { environment }
             single<KSqlClient> { database(environment) }
         })
+        modules(ApplicationModule().module)
     }
 }
+
