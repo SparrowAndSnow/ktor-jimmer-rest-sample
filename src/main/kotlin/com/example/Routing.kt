@@ -6,6 +6,9 @@ import io.ktor.server.resources.Resources
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
 import org.babyfish.jimmer.sql.kt.KSqlClient
+import org.babyfish.jimmer.sql.kt.ast.expression.asc
+import org.babyfish.jimmer.sql.kt.ast.expression.desc
+import org.babyfish.jimmer.sql.kt.fetcher.newFetcher
 import org.koin.ktor.ext.inject
 
 fun Application.configureRouting() {
@@ -13,23 +16,36 @@ fun Application.configureRouting() {
     val sqlClient by inject<KSqlClient>()
 
     routing {
-        route("/book"){
+        route("/book") {
             get {
                 val list = sqlClient.createQuery(Book::class) {
-                    select(table.fetchBy {
-                        nameUpperCase()
-                        env()
-                    })
-                }.fetchPage(1, 10)
+                    orderBy(table.price.asc(), table.id.desc())
+                    select(table.fetch(bookFetcher()))
+                }.fetchPage(0, 10)
                 call.respond(list)
             }
+
             get("/{id}") {
                 call.parameters["id"]?.toLong()?.let {
-                    sqlClient.findById(Book::class, it)?.let {
+                    sqlClient.findById(bookFetcher(), it)?.let {
                         call.respond(it)
                     }
                 }
             }
         }
+    }
+}
+
+fun bookFetcher() = newFetcher(Book::class).by {
+    nameUpperCase()
+    price()
+    env()
+    store {
+        name()
+        website()
+    }
+    authors {
+        name()
+        gender()
     }
 }

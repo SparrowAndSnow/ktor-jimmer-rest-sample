@@ -19,6 +19,17 @@ interface Book : BaseEntity {
 
     val price: BigDecimal
 
+    @ManyToOne
+    val store: BookStore?
+
+    @ManyToMany
+    @JoinTable(
+        name = "BOOK_AUTHOR_MAPPING",
+        joinColumnName = "BOOK_ID",
+        inverseJoinColumnName = "AUTHOR_ID"
+    )
+    val authors: List<Author>
+
     @Formula(dependencies = ["name"])
     val nameUpperCase: String?
         get() = name.uppercase()

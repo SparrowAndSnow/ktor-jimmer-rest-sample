@@ -9,4 +9,7 @@ interface BookStore : BaseEntity {
     val name: String
 
     val website: String?
+
+    @OneToMany(mappedBy = "store")
+    val books: List<Book>
 }
