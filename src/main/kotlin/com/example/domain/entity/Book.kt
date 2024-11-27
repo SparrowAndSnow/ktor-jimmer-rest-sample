@@ -26,7 +26,7 @@ interface Book : BaseEntity {
     @JoinTable(
         name = "BOOK_AUTHOR_MAPPING",
         joinColumnName = "BOOK_ID",
-        inverseJoinColumnName = "AUTHOR_ID"
+        inverseJoinColumnName = "AUTHOR_ID",
     )
     val authors: List<Author>
 
@@ -39,14 +39,18 @@ interface Book : BaseEntity {
 }
 
 @Single
-class ApplicationEnvironmentResolver: KTransientResolver<Long, Map<String, Any?>>, KoinComponent {
-
+class ApplicationEnvironmentResolver :
+    KTransientResolver<Long, Map<String, Any?>>,
+    KoinComponent {
     private val env by inject<ApplicationEnvironment>()
 
-    override fun resolve(ids: Collection<Long>): Map<Long, Map<String, Any?>> {
-        return ids.map { it to mapOf(
-            "host" to env.config.host,
-            "port" to env.config.port
-        ) }.toMap()
-    }
+    override fun resolve(ids: Collection<Long>): Map<Long, Map<String, Any?>> =
+        ids
+            .map {
+                it to
+                    mapOf(
+                        "host" to env.config.host,
+                        "port" to env.config.port,
+                    )
+            }.toMap()
 }
