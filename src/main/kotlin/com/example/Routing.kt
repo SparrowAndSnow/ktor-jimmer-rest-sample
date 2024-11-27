@@ -13,8 +13,6 @@ import io.ktor.server.resources.Resources
 import io.ktor.server.routing.*
 import kotlinx.serialization.Serializable
 import org.babyfish.jimmer.sql.kt.ast.expression.*
-import org.babyfish.jimmer.sql.kt.fetcher.newFetcher
-import java.math.BigDecimal
 
 fun Application.configureRouting() {
     install(Resources)
@@ -53,15 +51,10 @@ fun Application.configureRouting() {
             }
         }
 
-        create<Book, BookRoute.Create> { body ->
-        }
-    }
-}
+        create<Book, BookRoute.Create> {}
 
-val envFetcher =
-    newFetcher(Book::class).by {
-        env()
-    }
+    }.getAllRoutes().forEach { log.info("Route: $it") }
+}
 
 @Serializable
 @Resource("/book")
@@ -77,16 +70,8 @@ class BookRoute(
     )
 
     @Serializable
-    @Resource("/create")
-    class Create(
-        override val id: Long,
-        override val name: String,
-        override val edition: Int,
-        override val price: BigDecimalJson,
-        override val store: BookStore?,
-        override val authors: List<Author>,
-    ) : Book {
-        override val env: Map<String, Any?>
-            get() = TODO("Not yet implemented")
-    }
+    @Resource("/book")
+    class Create
 }
+
+
