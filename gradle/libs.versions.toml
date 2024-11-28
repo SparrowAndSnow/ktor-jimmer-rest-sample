@@ -34,6 +34,7 @@ jimmer = { module = "org.babyfish.jimmer:jimmer-sql-kotlin", version.ref = "jimm
 jimmer-ksp = { module = "org.babyfish.jimmer:jimmer-ksp", version.ref = "jimmer" }
 mysql = { module = "mysql:mysql-connector-java", version.ref = "mysql" }
 kotlin-test = { module = "org.jetbrains.kotlin:kotlin-test", version.ref = "kotlin" }
+kotlin-reflect = { module = "org.jetbrains.kotlin:kotlin-reflect", version.ref = "kotlin" }
 [bundles]
 api = [
     'ktor-server-core',
@@ -54,6 +55,7 @@ api = [
     'jimmer',
     'kotlinx-coroutines-core',
     'mysql',
+    'kotlin-reflect'
 ]
 
 api-test = ['kotlin-test', 'ktor-server-test-host']
