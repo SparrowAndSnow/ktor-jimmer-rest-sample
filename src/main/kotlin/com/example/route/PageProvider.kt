@@ -14,6 +14,6 @@ interface PageProvider {
     }
 }
 
-inline fun <reified TEntity : Any> PageProvider.page(block: Page.() -> Unit) {
+inline fun PageProvider.page(block: Page.() -> Unit) {
     block(page)
 }

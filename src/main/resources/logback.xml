@@ -9,4 +9,9 @@
     </root>
     <logger name="org.eclipse.jetty" level="INFO"/>
     <logger name="io.netty" level="INFO"/>
+
+    <logger name="org.zaxxer.hikari">
+        <level value="error"/>
+    </logger>
+
 </configuration>
