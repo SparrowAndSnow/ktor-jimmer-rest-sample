@@ -12,8 +12,7 @@ import kotlin.reflect.KProperty0
 interface ConditionProvider<T : Any> {
     val call: RoutingCall
 
-    class Impl<T : Any>(override val call: RoutingCall) : ConditionProvider<T> {
-    }
+    class Impl<T : Any>(override val call: RoutingCall) : ConditionProvider<T>
 }
 
 inline val <reified T : Any> ConditionProvider<T>.parameters: Map<String, Parameter<*>?>
@@ -43,7 +42,6 @@ inline fun <reified P : Any> eq(
 inline fun <reified T : Any> ConditionProvider<T>.`ilike?`(
     param: KProperty0<KExpression<String>>
 ): KNonNullExpression<Boolean>? {
-
     return param?.invoke()?.`ilike?`(call.toField<T, String>(param.name))
 }
 

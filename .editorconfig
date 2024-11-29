@@ -21,4 +21,8 @@ indent_size = 2
 indent_size = 2
 
 [*.{kt,kts}]
-ktlint_standard_no-wildcard-imports = disabled  # 星号导入
+ktlint_standard_no-wildcard-imports = disabled # 星号导入
+ktlint_standard_multiline-expression-wrapping = disabled # 多行表达式
+
+[build/**]
+ktlint = disabled # 让 ktlint 忽略
