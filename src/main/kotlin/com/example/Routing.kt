@@ -1,23 +1,20 @@
 package com.example
 
 import com.example.domain.entity.*
+import com.example.route.*
 import com.example.route.crud.Create.create
 import com.example.route.crud.List.list
 import com.example.route.crud.Query.id
 import com.example.route.crud.Edit.edit
 import com.example.route.crud.Remove.remove
-import com.example.route.eq
-import com.example.route.fetcher
-import com.example.route.filter
-import com.example.route.page
 import io.ktor.server.application.*
 import io.ktor.server.resources.Resources
 import io.ktor.server.routing.*
 import org.babyfish.jimmer.sql.kt.ast.expression.*
 
+
 fun Application.configureRouting() {
     install(Resources)
-
     routing {
         route("/book") {
             id<Book> {}
@@ -25,8 +22,16 @@ fun Application.configureRouting() {
                 filter {
                     where(
                         eq(table::name),
-                        eq(table::price)
+                        eq(table::price),
+                        eq(table::name, table.store::name),
+                        `ilike?`(table::name),
+
+                        between(
+                            table::price,
+                            table::price
+                        )
                     )
+
                     orderBy(table.id.desc())
                 }
                 fetcher {

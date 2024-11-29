@@ -4,7 +4,7 @@ import com.example.reflect.parse
 import com.example.route.CallProvider
 import com.example.route.KeyProvider
 import com.example.route.defaultPathVariable
-import com.example.route.entityId
+import com.example.route.entityIdType
 import io.ktor.http.*
 import io.ktor.server.resources.*
 import io.ktor.server.routing.*
@@ -22,7 +22,7 @@ object Remove : KoinComponent {
     ) = delete<TResource> { resource ->
         val provider = RemoveProvider.Impl<TEntity>(call).apply { block(resource) }
 
-        val key = provider.key ?: call.defaultPathVariable.parse(entityId<TEntity>())
+        val key = provider.key ?: call.defaultPathVariable.parse(entityIdType<TEntity>())
 
         sqlClient.deleteById(TEntity::class, key)
         call.response.status(HttpStatusCode.OK)
@@ -30,11 +30,11 @@ object Remove : KoinComponent {
 
     @KtorDsl
     inline fun <reified TEntity : Any> Route.remove(
-        path: String = "{id}",
+        path: String = Configuration.defaultPathVariable,
         crossinline block: suspend RemoveProvider<TEntity>.() -> Unit,
     ) = delete(path) {
         val provider = RemoveProvider.Impl<TEntity>(call).apply { block() }
-        val key = provider.key ?: call.defaultPathVariable.parse(entityId<TEntity>())
+        val key = provider.key ?: call.defaultPathVariable.parse(entityIdType<TEntity>())
 
         sqlClient.deleteById(TEntity::class, key)
         call.response.status(HttpStatusCode.OK)

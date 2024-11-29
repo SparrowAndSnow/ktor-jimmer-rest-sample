@@ -22,7 +22,7 @@ object Query : KoinComponent {
         val provider = QueryProvider.Impl<TEntity>(call).apply { block(resource) }
         val fetcher = provider.fetcher
 
-        val key = provider.key ?: call.defaultPathVariable.parse(entityId<TEntity>())
+        val key = provider.key ?: call.defaultPathVariable.parse(entityIdType<TEntity>())
 
         val result =
             if (fetcher != null) {
@@ -40,14 +40,14 @@ object Query : KoinComponent {
 
     @KtorDsl
     inline fun <reified TEntity : Any> Route.id(
-        path: String = "{id}",
+        path: String = Configuration.defaultPathVariable,
         crossinline block: suspend QueryProvider<TEntity>.() -> Unit,
     ) = get(path) {
 
         val provider = QueryProvider.Impl<TEntity>(call).apply { block() }
         val fetcher = provider.fetcher
 
-        val key = provider.key ?: call.defaultPathVariable.parse(entityId<TEntity>())
+        val key = provider.key ?: call.defaultPathVariable.parse(entityIdType<TEntity>())
 
         val result =
             if (fetcher != null) {

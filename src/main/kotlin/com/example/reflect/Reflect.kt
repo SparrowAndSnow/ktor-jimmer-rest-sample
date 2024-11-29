@@ -2,6 +2,7 @@ package com.example.reflect
 
 import java.math.BigDecimal
 import kotlin.reflect.KClass
+import kotlin.reflect.KProperty0
 import kotlin.reflect.full.memberProperties
 
 inline fun <reified T : Any> getPropertyByAnnotation(annotation: KClass<out Annotation>) =
@@ -20,8 +21,15 @@ inline fun String.parse(type: KClass<*>) = when (type) {
     else -> this
 }
 
-inline fun <reified T : Any> getTypeByPropertyName(name: String) =
-    T::class.memberProperties.find { it.name == name }?.returnType?.classifier
+fun <TClass : Any> getPropertyByPropertyName(type: KClass<TClass>, name: String): KProperty0<*>? =
+    type.memberProperties.find { it.name == name } as KProperty0<*>
+
+inline fun <reified TClass : Any, reified TProperty : Any> getPropertyByPropertyName(name: String)
+    : KProperty0<TProperty>? =
+    TClass::class.memberProperties.find { it.name == name } as KProperty0<TProperty>
+
+inline fun <reified TClass : Any, reified TProperty : Any> getTypeByPropertyName(name: String) =
+    getPropertyByPropertyName<TClass, TProperty>(name)?.returnType?.classifier as KClass<*>
 
 inline fun <reified T : Any> getTypeByAnnotation(annotation: KClass<out Annotation>) =
     getPropertyByAnnotation<T>(annotation)?.returnType?.classifier as KClass<*>

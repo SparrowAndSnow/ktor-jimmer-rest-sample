@@ -1,9 +1,11 @@
 package com.example.route
 
+import com.example.route.crud.Configuration
+
 class Page(
-    var enabled: Boolean = true,
-    var pageIndex: Int = 0,
-    var pageSize: Int = 10,
+    var enabled: Boolean = Configuration.defaultEnabledPage,
+    var pageIndex: Int = Configuration.defaultPageIndex,
+    var pageSize: Int = Configuration.defaultPageSize,
 )
 
 interface PageProvider {

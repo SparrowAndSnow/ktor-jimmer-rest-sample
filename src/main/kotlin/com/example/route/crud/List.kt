@@ -30,7 +30,10 @@ object List : KoinComponent {
                     select(table.fetch(fetcher))
                 }.let {
                     when {
-                        page.enabled -> it.fetchPage(page.pageIndex, page.pageSize)
+                        page.enabled -> it.fetchPage(
+                            call.param<Int>(page::pageIndex.name) ?: page.pageIndex,
+                            call.param<Int>(page::pageSize.name) ?: page.pageSize
+                        )
                         else -> it.execute()
                     }
                 }
