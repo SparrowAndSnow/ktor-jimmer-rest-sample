@@ -21,24 +21,15 @@ fun Application.configureRouting() {
             list<Book> {
                 filter {
                     where(
-                        eq(table::name),
-                        eq(table::price),
-                        eq(table::name, table.store::name),
                         `ilike?`(table::name),
-
-                        between(
-                            table::price,
-                            table::price
-                        )
+                        `between?`(table::price)
                     )
-
                     orderBy(table.id.desc())
                 }
                 fetcher {
                     by {
                         allScalarFields()
-                        name(false)
-                        nameUpperCase()
+                        name()
                         store {
                             name()
                             website()

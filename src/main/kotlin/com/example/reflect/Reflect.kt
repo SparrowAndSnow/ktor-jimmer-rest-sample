@@ -2,6 +2,7 @@ package com.example.reflect
 
 import java.math.BigDecimal
 import kotlin.reflect.KClass
+import kotlin.reflect.KProperty
 import kotlin.reflect.KProperty0
 import kotlin.reflect.full.memberProperties
 
@@ -21,12 +22,12 @@ inline fun String.parse(type: KClass<*>) = when (type) {
     else -> this
 }
 
-fun <TClass : Any> getPropertyByPropertyName(type: KClass<TClass>, name: String): KProperty0<*>? =
+fun getPropertyByPropertyName(type: KClass<*>, name: String): KProperty<*>? =
     type.memberProperties.find { it.name == name } as KProperty0<*>
 
-inline fun <reified TClass : Any, reified TProperty : Any> getPropertyByPropertyName(name: String)
-    : KProperty0<TProperty>? =
-    TClass::class.memberProperties.find { it.name == name } as KProperty0<TProperty>
+inline fun <reified TClass : Any, reified TProperty> getPropertyByPropertyName(name: String)
+    : KProperty<TProperty>? =
+    TClass::class.memberProperties.find { it.name == name } as? KProperty<TProperty>
 
 inline fun <reified TClass : Any, reified TProperty : Any> getTypeByPropertyName(name: String) =
     getPropertyByPropertyName<TClass, TProperty>(name)?.returnType?.classifier as KClass<*>

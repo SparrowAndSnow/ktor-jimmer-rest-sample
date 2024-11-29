@@ -6,6 +6,7 @@ import com.example.route.crud.Configuration
 import io.ktor.server.routing.*
 import io.ktor.util.*
 import kotlin.reflect.KClass
+import kotlin.reflect.KProperty
 import kotlin.reflect.KProperty0
 
 interface CallProvider {
@@ -21,9 +22,9 @@ inline fun <reified T : Any> RoutingCall.param(name: String): T? {
     return param(T::class, name)
 }
 
-inline fun <reified T : Any, reified E : Any> RoutingCall.toField(name: String): E? {
-    val type = getTypeByPropertyName<T,E>(name)
-    return param(type, name) as E?
+inline fun <reified T : Any, reified E : Any> RoutingCall.param(parameter: Parameter<E>): E? {
+    val type = getTypeByPropertyName<T, E>(parameter.name)
+    return param(type, parameter.nameWithExt) as E?
 }
 
 val RoutingCall.defaultPathVariable
@@ -50,14 +51,16 @@ val RoutingCall.defaultPathVariable
  * @property nameWithExt String
  * @constructor
  */
-class Parameter<out T>(val property: KProperty0<T>) : KProperty0<T> by property {
+class Parameter<T>(val property: KProperty<T>) : KProperty<T> by property {
     // 比如 ge le exact
     var ext: String? = null
-    val separator = Configuration.parameterSeparator
-    val hasExt = ext != null
+    val separator get() = Configuration.parameterSeparator
+    val hasExt get() = ext != null
 
     // 比如 createTime__ge createTime__le name__exact
-    val nameWithExt: String = property.name + separator + ext
+    val nameWithExt: String get() = property.name + if (hasExt) separator + ext else ""
+
+    var value: T? = null
 }
 
 infix fun <T> KProperty0<T>.ext(ext: String): Parameter<T> =
