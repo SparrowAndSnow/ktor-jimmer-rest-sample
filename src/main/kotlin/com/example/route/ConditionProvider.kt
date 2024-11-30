@@ -1,10 +1,13 @@
 package com.example.route
 
+import com.example.reflect.getMemberByMemberName
 import com.example.reflect.getPropertyByPropertyName
+import com.example.reflect.getPropertyReceiver
 import com.example.route.crud.Configuration
 import io.ktor.server.routing.*
 import org.babyfish.jimmer.sql.ast.LikeMode
 import org.babyfish.jimmer.sql.kt.ast.expression.*
+import kotlin.reflect.KClass
 import kotlin.reflect.KProperty0
 
 
@@ -24,21 +27,36 @@ fun <T : Any> ConditionProvider<T>.findNameWithExt(name: String): List<Pair<Stri
     return list
 }
 
+//inline fun <reified T : Any, reified P : Any> ConditionProvider<T>.parameterMemoize(
+//    property: KProperty0<KExpression<P>>,
+//    ext: String? = null
+//): Map<String?, Parameter<P>?> {
+//    return parameter(property, ext).memoize()
+//}
 
 inline fun <reified T : Any, reified P : Any> ConditionProvider<T>.parameter(
+    property: KProperty0<KExpression<P>>,
+    ext: String? = null
+): Map<String?, Parameter<P>?> {
+    val receiver = getPropertyReceiver(property)
+    val javaTableName = getPropertyByPropertyName(receiver::class, "javaTable")?.getter?.call(receiver).toString()
+    val typeName = getMemberByMemberName(receiver::class, "getImmutableType")?.call(receiver).toString()
+    val type = Class.forName(typeName).kotlin
+    val name = (javaTableName.split(".") + property.name).drop(1).joinToString(Configuration.subParameterSeparator)
+    return parameter(type, name, ext)
+}
+
+inline fun <reified T : Any, reified P : Any> ConditionProvider<T>.parameter(
+    type: KClass<*>,
     name: String,
     ext: String? = null
 ): Map<String?, Parameter<P>?> {
     val findNameWithExt = findNameWithExt(name)
     val map = findNameWithExt.map {
         val (parameterName, parameterExt) = it
-        val property = getPropertyByPropertyName<T, P>(parameterName)
-
-        if (property == null) return@map (parameterExt ?: ext) to null
-
-        val parameter = Parameter(property).apply {
+        val parameter = Parameter<P>(parameterName).apply {
             this.ext = parameterExt ?: ext
-            this.value = call.param<T, P>(this)
+            this.value = call.param(type, this.nameWithExt)
         }
         return@map parameter.ext to parameter
     }.toMap()
@@ -48,7 +66,7 @@ inline fun <reified T : Any, reified P : Any> ConditionProvider<T>.parameter(
 
 inline fun <reified T : Any, reified P : Any> ConditionProvider<T>.`eq?`(param: KProperty0<KExpression<P>>)
     : KNonNullExpression<Boolean>? {
-    val parameter = parameter<T, P>(param.name).values.firstOrNull()
+    val parameter = parameter<T, P>(param).values.firstOrNull()
     return param?.invoke()?.`eq?`(parameter?.value)
 }
 
@@ -57,7 +75,7 @@ inline fun <reified T : Any, reified P : Any> ConditionProvider<T>.`eq?`(param: 
 inline fun <reified T : Any> ConditionProvider<T>.`ilike?`(
     param: KProperty0<KExpression<String>>
 ): KNonNullExpression<Boolean>? {
-    val parameter = parameter<T, String>(param.name)?.values?.firstOrNull()
+    val parameter = parameter<T, String>(param).values?.firstOrNull()
     val likeMode = when (parameter?.ext) {
         "anywhere" -> LikeMode.ANYWHERE
         "exact" -> LikeMode.EXACT
@@ -71,7 +89,7 @@ inline fun <reified T : Any> ConditionProvider<T>.`ilike?`(
 inline fun <reified T : Any, reified P : Comparable<*>> ConditionProvider<T>.`between?`(
     param: KProperty0<KExpression<P>>,
 ): KNonNullExpression<Boolean>? {
-    val parameter = parameter<T, P>(param.name)
+    val parameter = parameter<T, P>(param)
     return param?.invoke()?.`between?`(parameter["ge"]?.value, parameter["le"]?.value)
 }
 

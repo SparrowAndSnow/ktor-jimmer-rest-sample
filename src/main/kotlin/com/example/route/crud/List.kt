@@ -7,7 +7,7 @@ import io.ktor.server.routing.*
 import io.ktor.utils.io.*
 import org.babyfish.jimmer.sql.fetcher.Fetcher
 import org.babyfish.jimmer.sql.kt.KSqlClient
-import org.babyfish.jimmer.sql.kt.ast.query.KMutableQuery
+import org.babyfish.jimmer.sql.kt.ast.query.KMutableRootQuery
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 
@@ -81,7 +81,7 @@ interface ListProvider<T : Any> :
         override val call: RoutingCall,
     ) : ListProvider<T> {
         override var fetcher: Fetcher<T>? = null
-        override var filter: (KMutableQuery<T>.() -> Unit)? = null
+        override var filter: (KMutableRootQuery<T>.() -> Unit)? = null
         override var page: Page = Page()
     }
 }

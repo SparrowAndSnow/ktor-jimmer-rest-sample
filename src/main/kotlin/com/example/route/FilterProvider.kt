@@ -1,15 +1,15 @@
 package com.example.route
 
-import org.babyfish.jimmer.sql.kt.ast.query.KMutableQuery
+import org.babyfish.jimmer.sql.kt.ast.query.KMutableRootQuery
 
 interface FilterProvider<T : Any> {
-    var filter: (KMutableQuery<T>.() -> Unit)?
+    var filter: (KMutableRootQuery<T>.() -> Unit)?
 
     class Impl<T : Any> : FilterProvider<T> {
-        override var filter: (KMutableQuery<T>.() -> Unit)? = null
+        override var filter: (KMutableRootQuery<T>.() -> Unit)? = null
     }
 }
 
-inline fun <T : Any> FilterProvider<T>.filter(noinline block: KMutableQuery<T>.() -> Unit) {
+inline fun <T : Any> FilterProvider<T>.filter(noinline block: KMutableRootQuery<T>.() -> Unit) {
     filter = block
 }

@@ -75,7 +75,3 @@ interface QueryProvider<T : Any> :
         override var key: Any? = null
     }
 }
-
-inline fun <reified T : Any> QueryProvider<T>.key(key: Any) {
-    this.key = key
-}

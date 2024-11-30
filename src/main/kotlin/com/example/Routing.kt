@@ -1,32 +1,36 @@
 package com.example
 
 import com.example.domain.entity.*
-import com.example.reflect.getPropertyByPropertyName
 import com.example.route.*
 import com.example.route.crud.Create.create
 import com.example.route.crud.List.list
 import com.example.route.crud.Query.id
 import com.example.route.crud.Edit.edit
 import com.example.route.crud.Remove.remove
-import com.example.validate.validateAll
 import io.ktor.server.application.*
 import io.ktor.server.resources.Resources
 import io.ktor.server.routing.*
 import org.babyfish.jimmer.sql.kt.ast.expression.*
-import kotlin.reflect.KProperty
 
 
 fun Application.configureRouting() {
     install(Resources)
     routing {
         route("/book") {
-            id<Book> {}
+            id<Book> {
+
+            }
+
             list<Book> {
                 filter {
                     where(
                         `ilike?`(table::name),
-                        `between?`(table::price)
+                        `between?`(table::price),
+                        `ilike?`(table.store::name),
                     )
+                    where += table.authors {
+                        `ilike?`(::lastName)
+                    }
                     orderBy(table.id.desc())
                 }
                 fetcher {
@@ -44,15 +48,16 @@ fun Application.configureRouting() {
                         }
                     }
                 }
-                page {
-                    enabled = true
+            }
+            create<Book> { body ->
+                entity {
+                    body.copy {
+                        name = body.name.uppercase()
+                    }
                 }
             }
-            create<Book> {
-
-            }
             edit<Book> {
-                validate<Book> { entity ->
+                validate { entity ->
                     entity::name.notBlank()
                 }
             }
