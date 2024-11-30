@@ -2,6 +2,9 @@ package com.example.route.crud
 
 import com.example.route.CallProvider
 import com.example.route.EntityProvider
+import com.example.route.ValidatorProvider
+import com.example.validate.*
+import io.ktor.http.*
 import io.ktor.server.request.*
 import io.ktor.server.resources.patch
 import io.ktor.server.response.*
@@ -34,18 +37,31 @@ object Edit : KoinComponent {
     ) {
         val body = call.receive<TEntity>()
         val provider = EditProvider.Impl<TEntity>(call).apply { block(body) }
-        val entity = provider.entity ?: body
-        entity?.let {
+        val entity = provider.entity ?: body ?: return call.respond(HttpStatusCode.BadRequest)
+
+        provider.validator?.let {
+            validateAll(entity, it)
+        }?.let {
+            if (it is ValidationResult.Invalid) {
+                call.response.status(HttpStatusCode.BadRequest)
+                return call.respond(it.violations)
+            }
+        }
+
+        entity.let {
             val result = sqlClient.update(it)
             call.respond(result.modifiedEntity)
         }
     }
 }
 
-interface EditProvider<T : Any> : CallProvider, EntityProvider<T> {
+interface EditProvider<T : Any> : CallProvider, EntityProvider<T>,
+    ValidatorProvider<T> {
+
     class Impl<T : Any>(
         override val call: RoutingCall,
     ) : EditProvider<T> {
         override var entity: T? = null
+        override var validator: (ValidationBuilder.(T) -> Unit)? = null
     }
 }
