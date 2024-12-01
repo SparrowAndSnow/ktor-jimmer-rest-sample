@@ -8,14 +8,12 @@ import io.ktor.server.routing.*
 import org.babyfish.jimmer.sql.ast.LikeMode
 import org.babyfish.jimmer.sql.kt.ast.expression.*
 import kotlin.reflect.KClass
+import kotlin.reflect.KProperty
 import kotlin.reflect.KProperty0
 
 
 interface ConditionProvider<T : Any> {
     val call: RoutingCall
-
-    class Impl<T : Any>(override val call: RoutingCall) : ConditionProvider<T> {
-    }
 }
 
 fun <T : Any> ConditionProvider<T>.findNameWithExt(name: String): List<Pair<String, String?>> {
@@ -35,7 +33,7 @@ fun <T : Any> ConditionProvider<T>.findNameWithExt(name: String): List<Pair<Stri
 //}
 
 inline fun <reified T : Any, reified P : Any> ConditionProvider<T>.parameter(
-    property: KProperty0<KExpression<P>>,
+    property: KProperty<KExpression<P>>,
     ext: String? = null
 ): Map<String?, Parameter<P>?> {
     val receiver = getPropertyReceiver(property)

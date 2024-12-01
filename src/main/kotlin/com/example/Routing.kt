@@ -27,6 +27,7 @@ fun Application.configureRouting() {
                         `ilike?`(table::name),
                         `between?`(table::price),
                         `ilike?`(table.store::name),
+
                     )
                     where += table.authors {
                         `ilike?`(::lastName)
@@ -59,6 +60,9 @@ fun Application.configureRouting() {
             edit<Book> {
                 validate { entity ->
                     entity::name.notBlank()
+                    entity?.store?.let{
+                        it::name.notBlank()
+                    }
                 }
             }
             remove<Book> {}
