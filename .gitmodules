@@ -1,0 +1,3 @@
+[submodule "ktor-jimmer-rest"]
+	path = ktor-jimmer-rest
+	url = git://github.com/eimsound/ktor-jimmer-rest.git

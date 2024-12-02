@@ -1,17 +1,12 @@
 package com.example
 
+import com.eimsound.ktor.jimmer.rest.provider.*
 import com.example.domain.entity.*
-import com.example.route.*
-import com.example.route.crud.Create.create
-import com.example.route.crud.List.list
-import com.example.route.crud.Query.id
-import com.example.route.crud.Edit.edit
-import com.example.route.crud.Remove.remove
 import io.ktor.server.application.*
 import io.ktor.server.resources.Resources
 import io.ktor.server.routing.*
 import org.babyfish.jimmer.sql.kt.ast.expression.*
-
+import com.eimsound.ktor.jimmer.rest.route.*
 
 fun Application.configureRouting() {
     install(Resources)
@@ -27,11 +22,7 @@ fun Application.configureRouting() {
                         `ilike?`(table::name),
                         `between?`(table::price),
                         `ilike?`(table.store::name),
-
                     )
-                    where += table.authors {
-                        `ilike?`(::lastName)
-                    }
                     orderBy(table.id.desc())
                 }
                 fetcher {
@@ -51,6 +42,9 @@ fun Application.configureRouting() {
                 }
             }
             create<Book> { body ->
+                validate { entity ->
+                    entity::name.notBlank()
+                }
                 entity {
                     body.copy {
                         name = body.name.uppercase()
@@ -60,9 +54,6 @@ fun Application.configureRouting() {
             edit<Book> {
                 validate { entity ->
                     entity::name.notBlank()
-                    entity?.store?.let{
-                        it::name.notBlank()
-                    }
                 }
             }
             remove<Book> {}
