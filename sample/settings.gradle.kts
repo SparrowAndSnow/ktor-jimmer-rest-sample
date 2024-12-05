@@ -3,7 +3,8 @@ plugins {
 }
 rootProject.name = "sample"
 
-//include(":ktor-jimmer-rest")
+includeBuild("../ktor-jimmer-rest/ktor-jimmer-rest")
+
 //dependencyResolutionManagement {
 //    project(":ktor-jimmer-rest")
 //        .projectDir =

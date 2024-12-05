@@ -9,7 +9,7 @@ import org.koin.ksp.generated.module
 import org.koin.ktor.ext.inject
 import org.koin.ktor.plugin.Koin
 import org.koin.logger.slf4jLogger
-import com.eimsound.ktor.jimmer.rest.plugin.*
+import com.eimsound.ktor.plugin.*
 
 @Module
 @ComponentScan("com.example")
@@ -25,7 +25,13 @@ fun Application.configureFrameworks() {
         modules(ApplicationModule().module)
     }
     install(JimmerRest){
-        jimmerSqlClient = inject<KSqlClient>().value
+        jimmerSqlClientFactory {
+            inject<KSqlClient>()
+        }
+        pageConfiguration {
+            defaultPageSize = 10
+
+        }
     }
 }
 

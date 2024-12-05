@@ -21,7 +21,8 @@ repositories {
 }
 
 dependencies {
-    implementation(fileTree("../ktor-jimmer-rest/ktor-jimmer-rest/build/libs") { include("*.jar") })
+//    implementation(fileTree("../ktor-jimmer-rest/ktor-jimmer-rest/build/libs") { include("*.jar") })
+    implementation("com.eimsound:ktor-jimmer-rest")
     ksp(libs.jimmer.ksp)
     ksp(libs.koin.annotations.ksp)
     implementation(libs.bundles.api)
