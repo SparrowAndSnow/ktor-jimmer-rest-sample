@@ -22,6 +22,7 @@ fun Application.configureRouting() {
                     where(
                         `ilike?`(table::name),
                         `ilike?`(table.store::name),
+                        `between?`(table::price)
                     )
 
                     val price = call.queryParameterExt<BigDecimal>("price")
