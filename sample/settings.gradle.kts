@@ -5,9 +5,12 @@ rootProject.name = "sample"
 
 includeBuild("../ktor-jimmer-rest/ktor-jimmer-rest")
 
-//dependencyResolutionManagement {
-//    project(":ktor-jimmer-rest")
-//        .projectDir =
-//        file("../ktor-jimmer-rest/ktor-jimmer-rest")
-//}
+dependencyResolutionManagement{
+    repositories {
+        maven("https://mirrors.tencent.com/nexus/repository/maven-public/")
+        mavenCentral()
+    }
+}
 
+include("book-service")
+include("order-service")
