@@ -11,10 +11,15 @@ import com.eimsound.util.ktor.defaultValue
 import com.eimsound.util.ktor.queryParameterExt
 import java.math.BigDecimal
 import com.book.domain.entity.dto.BookInput
+import io.ktor.http.*
 
 fun Application.configureRouting() {
     install(Resources)
     routing {
+        get("/healthCheck"){
+            call.response.status(HttpStatusCode.OK)
+        }
+
         route("/book") {
             id<Book> {}
 

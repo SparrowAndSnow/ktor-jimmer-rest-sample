@@ -1,11 +1,14 @@
 package com.book
 import com.orbitz.consul.Consul
 import com.orbitz.consul.model.agent.ImmutableRegistration
+import com.orbitz.consul.model.agent.ImmutableRegCheck
 import io.ktor.client.*
 import io.ktor.client.plugins.*
 import io.ktor.util.*
 import io.ktor.client.request.HttpRequestPipeline
 import io.ktor.server.application.*
+import org.koin.core.component.KoinComponent
+import org.koin.core.component.inject
 
 class ConsulFeature(val consulUrl: String) {
 
@@ -14,7 +17,9 @@ class ConsulFeature(val consulUrl: String) {
         fun build(): ConsulFeature = ConsulFeature(consulUrl)
     }
 
-    companion object Feature : HttpClientPlugin<Config, ConsulFeature> {
+    companion object Feature : HttpClientPlugin<Config, ConsulFeature>, KoinComponent {
+        val consulClient by inject<Consul>()
+
         var currentNodeIndex: Int = 0
 
         override val key = AttributeKey<ConsulFeature>("ConsulFeature")
@@ -24,7 +29,7 @@ class ConsulFeature(val consulUrl: String) {
         //轮询策略
         override fun install(feature: ConsulFeature, scope: HttpClient) {
             scope.requestPipeline.intercept(HttpRequestPipeline.Render) {
-                var consulClient = Consul.builder().withUrl(feature.consulUrl).build()
+//                var consulClient = Consul.builder().withUrl(feature.consulUrl).build()
                 val nodes = consulClient.healthClient().getHealthyServiceInstances(context.url.host).response
                 val selectedNode = nodes[currentNodeIndex]
                 context.url.host = selectedNode.service.address
@@ -48,6 +53,7 @@ fun consul(environment: ApplicationEnvironment): Consul {
         .name(name)
         .address(address)
         .port(port)
+        .check(ImmutableRegCheck.http("http://$address:$port/healthCheck",5))
         .build()
     consul.agentClient().register(service)
     println("Registered ${service.id} at ${service.address}:${service.port}")

@@ -10,6 +10,7 @@ import com.eimsound.util.parser.parse
 import io.ktor.client.*
 import io.ktor.client.call.*
 import io.ktor.client.request.*
+import io.ktor.http.*
 import io.ktor.server.response.*
 import org.koin.ktor.ext.inject
 
@@ -18,7 +19,9 @@ fun Application.configureRouting() {
     val httpClient by inject<HttpClient>()
 
     routing {
-
+        get("/healthCheck"){
+            call.response.status(HttpStatusCode.OK)
+        }
         route("/book") {
             get("/{id}") {
                 val id = call.defaultPathVariable.parse(entityIdType<Book>())

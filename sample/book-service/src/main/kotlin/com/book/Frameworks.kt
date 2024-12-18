@@ -11,6 +11,7 @@ import org.koin.ktor.plugin.Koin
 import org.koin.logger.slf4jLogger
 import com.eimsound.ktor.plugin.*
 import com.eimsound.ktor.validator.exception.ValidationException
+import com.orbitz.consul.Consul
 import io.ktor.client.*
 import io.ktor.http.HttpStatusCode
 import io.ktor.server.plugins.statuspages.StatusPages
@@ -29,6 +30,7 @@ fun Application.configureFrameworks() {
         modules(module {
             single<ApplicationEnvironment> { environment }
             single<KSqlClient> { database(environment) }
+            single<Consul> { consul(environment) }
             single<HttpClient> { httpClient(environment)  }
         })
         modules(ApplicationModule().module)
