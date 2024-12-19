@@ -9,7 +9,6 @@ import org.babyfish.jimmer.sql.kt.ast.expression.*
 import com.eimsound.ktor.route.*
 import com.eimsound.util.ktor.defaultValue
 import com.eimsound.util.ktor.queryParameterExt
-import java.math.BigDecimal
 import com.book.domain.entity.dto.BookInput
 import io.ktor.http.*
 
@@ -29,14 +28,6 @@ fun Application.configureRouting() {
                         `ilike?`(table::name),
                         `ilike?`(table.store::name),
                         `between?`(table::price)
-                    )
-
-                    val price = call.queryParameterExt<BigDecimal>("price")
-                    where(
-                        table.price.`between?`(
-                            price["le"]?.value,
-                            price["ge"]?.value
-                        )
                     )
 
                     where += table.authors {

@@ -11,6 +11,7 @@ import org.koin.ktor.plugin.Koin
 import org.koin.logger.slf4jLogger
 import com.eimsound.ktor.plugin.*
 import com.eimsound.ktor.validator.exception.ValidationException
+import com.fasterxml.jackson.databind.ObjectMapper
 import com.orbitz.consul.Consul
 import io.ktor.client.*
 import io.ktor.http.HttpStatusCode
@@ -23,15 +24,14 @@ import io.ktor.server.response.respondText
 class ApplicationModule
 
 fun Application.configureFrameworks() {
-    consul(environment)
-
     install(Koin) {
         slf4jLogger()
         modules(module {
             single<ApplicationEnvironment> { environment }
             single<KSqlClient> { database(environment) }
-            single<Consul> { consul(environment) }
+            single<Consul>(createdAtStart = true) { consul(environment) }
             single<HttpClient> { httpClient(environment)  }
+            single<ObjectMapper> { ObjectMapper().apply { registerModule() } }
         })
         modules(ApplicationModule().module)
     }

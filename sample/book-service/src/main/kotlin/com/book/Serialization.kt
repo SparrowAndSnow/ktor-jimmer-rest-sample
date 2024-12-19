@@ -1,5 +1,6 @@
 package com.book
 
+import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule
 import com.fasterxml.jackson.datatype.jsr310.deser.*
 import com.fasterxml.jackson.datatype.jsr310.ser.*
@@ -23,19 +24,26 @@ import java.time.format.DateTimeFormatter
 fun Application.configureSerialization() {
     install(ContentNegotiation) {
         jackson {
-            registerModule(ImmutableModule())
-            registerModule(
-                JavaTimeModule().apply {
-                    addSerializer(LocalDateTimeSerializer(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")))
-                    addSerializer(LocalDateSerializer(DateTimeFormatter.ofPattern("yyyy-MM-dd")))
-                    addSerializer(LocalTimeSerializer(DateTimeFormatter.ofPattern("HH:mm:ss")))
-                    addDeserializer(LocalDateTime::class, LocalDateTimeDeserializer(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")))
-                    addDeserializer(LocalDate::class, LocalDateDeserializer(DateTimeFormatter.ofPattern("yyyy-MM-dd")))
-                    addDeserializer(LocalTime::class, LocalTimeDeserializer(DateTimeFormatter.ofPattern("HH:mm:ss")))
-                },
-            )
+            registerModule()
         }
     }
+}
+
+fun ObjectMapper.registerModule() {
+    registerModule(ImmutableModule())
+    registerModule(
+        JavaTimeModule().apply {
+            addSerializer(LocalDateTimeSerializer(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")))
+            addSerializer(LocalDateSerializer(DateTimeFormatter.ofPattern("yyyy-MM-dd")))
+            addSerializer(LocalTimeSerializer(DateTimeFormatter.ofPattern("HH:mm:ss")))
+            addDeserializer(
+                LocalDateTime::class,
+                LocalDateTimeDeserializer(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"))
+            )
+            addDeserializer(LocalDate::class, LocalDateDeserializer(DateTimeFormatter.ofPattern("yyyy-MM-dd")))
+            addDeserializer(LocalTime::class, LocalTimeDeserializer(DateTimeFormatter.ofPattern("HH:mm:ss")))
+        },
+    )
 }
 
 typealias BigDecimalJson =
