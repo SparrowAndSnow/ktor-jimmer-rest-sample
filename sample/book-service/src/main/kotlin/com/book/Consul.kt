@@ -53,7 +53,7 @@ fun consul(environment: ApplicationEnvironment): Consul {
         .name(name)
         .address(address)
         .port(port)
-        .check(ImmutableRegCheck.http("http://$address:$port/healthCheck",5))
+        .check(ImmutableRegCheck.http("http://$address:$port/health",5))
         .build()
     consul.agentClient().register(service)
     println("Registered ${service.id} at ${service.address}:${service.port}")

@@ -7,21 +7,18 @@ import io.ktor.server.routing.*
 import com.eimsound.util.jimmer.entityIdType
 import com.eimsound.util.ktor.defaultPathVariable
 import com.eimsound.util.parser.parse
+import dev.hayden.KHealth
 import io.ktor.client.*
 import io.ktor.client.call.*
 import io.ktor.client.request.*
-import io.ktor.http.*
 import io.ktor.server.response.*
 import org.koin.ktor.ext.inject
 
 fun Application.configureRouting() {
     install(Resources)
     val httpClient by inject<HttpClient>()
-
+    install(KHealth)
     routing {
-        get("/healthCheck"){
-            call.response.status(HttpStatusCode.OK)
-        }
         route("/book") {
             get("/{id}") {
                 val id = call.defaultPathVariable.parse(entityIdType<Book>())
