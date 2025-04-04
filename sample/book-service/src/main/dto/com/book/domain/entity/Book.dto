@@ -7,6 +7,8 @@ BookView{
 
 specification BookSpec{
     like(name)
+    ge(price)
+    lt(price)
 }
 
 input BookInput{

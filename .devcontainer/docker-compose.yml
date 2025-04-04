@@ -53,3 +53,12 @@ services:
     volumes:
       - /data/docker-compose/consul:/var/lib/consul/data
     command: [agent,-server,-ui,-client=0.0.0.0,-bootstrap-expect=1]
+
+  redis:
+    container_name: ktor_jimmer_redis
+    image: redis:latest
+    restart: always
+    ports:
+      - "6379:6379"
+    volumes:
+      - /data/docker-compose/redis:/var/lib/redis/data

@@ -10,6 +10,7 @@ import com.eimsound.ktor.route.*
 import com.eimsound.util.ktor.defaultValue
 import com.eimsound.util.ktor.queryParameterExt
 import com.book.domain.entity.dto.BookInput
+import com.book.domain.entity.dto.BookSpec
 import dev.hayden.KHealth
 
 fun Application.configureRouting() {
@@ -21,6 +22,7 @@ fun Application.configureRouting() {
 
             list<Book> {
                 filter {
+                    where(specification<BookSpec>())
                     where(
                         `ilike?`(table::name),
                         `ilike?`(table.store::name),
@@ -33,7 +35,7 @@ fun Application.configureRouting() {
                     orderBy(table.id.desc())
                 }
                 fetcher {
-                    by {
+                    creator.by {
                         allScalarFields()
                         name()
                         store {
@@ -71,7 +73,7 @@ fun Application.configureRouting() {
                     it.copy {
                         name = it.name.uppercase()
                     }
-                 }
+                }
             }
             edit<BookInput> {
                 validator {
