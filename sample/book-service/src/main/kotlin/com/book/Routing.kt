@@ -17,25 +17,22 @@ fun Application.configureRouting() {
     install(Resources)
     install(KHealth)
     routing {
-        route("/book") {
-            id<Book> {}
+        api<Book>("/book") {
+            filter {
+                where(
+                    `ilike?`(table::name),
+                    `ilike?`(table.store::name),
+                    `between?`(table::price)
+                )
 
-            list<Book> {
-                filter {
-                    where(specification<BookSpec>())
-                    where(
-                        `ilike?`(table::name),
-                        `ilike?`(table.store::name),
-                        `between?`(table::price)
-                    )
-
-                    where += table.authors {
-                        firstName `ilike?` call.queryParameterExt<String>("firstName").defaultValue()
-                    }
-                    orderBy(table.id.desc())
+                where += table.authors {
+                    firstName `ilike?` call.queryParameterExt<String>("firstName").defaultValue()
                 }
-                fetcher {
-                    creator.by {
+                orderBy(table.id.desc())
+            }
+            fetcher {
+                with(creator){
+                    by {
                         allScalarFields()
                         name()
                         store {
@@ -50,42 +47,18 @@ fun Application.configureRouting() {
                     }
                 }
             }
-            create<Book> {
-                validator {
-                    it::name.notBlank()
-                    it.store!!::name.notBlank()
+            validator {
+                it::name.notBlank()
 
-                    it::price.range(0.toBigDecimal()..100.toBigDecimal()) { name, range ->
-                        "$name must be between ${range.start} and ${range.endInclusive}"
-                    }
-
-                    it::authors.notEmpty()
-                    it.authors.mapIndexed { index, author ->
-                        author::firstName.notBlank { name ->
-                            "$name[$index] cannot be blank"
-                        }
-                        author::lastName.notBlank()
-                    }
-
-                    it.store!!::website.isUrl()
-                }
-                entity {
-                    it.copy {
-                        name = it.name.uppercase()
-                    }
+                it::price.range(0.toBigDecimal()..100.toBigDecimal()) { name, range ->
+                    "$name must be between ${range.start} and ${range.endInclusive}"
                 }
             }
-            edit<BookInput> {
-                validator {
-                    it::name.notBlank()
-                }
-                entity { body ->
-                    BookInput(body.toEntity {
-                        name = body.name.uppercase()
-                    })
+            entity {
+                it.copy {
+                    name = it.name.uppercase()
                 }
             }
-            remove<Book> {}
         }
     }.getAllRoutes().forEach { log.info("Route: $it") }
 }
