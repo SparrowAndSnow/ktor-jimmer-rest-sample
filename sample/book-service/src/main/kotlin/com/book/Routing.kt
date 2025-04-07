@@ -2,6 +2,7 @@ package com.book
 
 import com.eimsound.ktor.provider.*
 import com.book.domain.entity.*
+import com.book.domain.entity.dto.BookView
 import io.ktor.server.application.*
 import io.ktor.server.resources.Resources
 import io.ktor.server.routing.*
@@ -9,8 +10,6 @@ import org.babyfish.jimmer.sql.kt.ast.expression.*
 import com.eimsound.ktor.route.*
 import com.eimsound.util.ktor.defaultValue
 import com.eimsound.util.ktor.queryParameterExt
-import com.book.domain.entity.dto.BookInput
-import com.book.domain.entity.dto.BookSpec
 import dev.hayden.KHealth
 
 fun Application.configureRouting() {
@@ -26,10 +25,11 @@ fun Application.configureRouting() {
                 )
 
                 where += table.authors {
-                    firstName `ilike?` call.queryParameterExt<String>("firstName").defaultValue()
+                    firstName `ilike?` this@api.call.queryParameterExt<String>("firstName").defaultValue()
                 }
                 orderBy(table.id.desc())
             }
+//            fetcher(BookView::class)
             fetcher {
                 with(creator){
                     by {
@@ -48,10 +48,11 @@ fun Application.configureRouting() {
                 }
             }
             validator {
-                it::name.notBlank()
-
-                it::price.range(0.toBigDecimal()..100.toBigDecimal()) { name, range ->
-                    "$name must be between ${range.start} and ${range.endInclusive}"
+                with(it){
+                    name.notBlank{ "姓名不能为空" }
+                    price.range(0.toBigDecimal()..100.toBigDecimal()) { range ->
+                        "价格必须在${range.start}和${range.endInclusive}之间"
+                    }
                 }
             }
             entity {
