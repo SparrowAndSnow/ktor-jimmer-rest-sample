@@ -2,6 +2,8 @@ package com.book
 
 import com.eimsound.ktor.provider.*
 import com.book.domain.entity.*
+import com.book.domain.entity.dto.BookInput
+import com.book.domain.entity.dto.BookSpec
 import com.book.domain.entity.dto.BookView
 import io.ktor.server.application.*
 import io.ktor.server.resources.Resources
@@ -16,12 +18,25 @@ fun Application.configureRouting() {
     install(Resources)
     install(KHealth)
     routing {
-        api<Book>("/book") {
+        create<BookInput>("/book/create") {
+            validator {
+                with(it) {
+                    name.notBlank { "姓名不能为空" }
+                    price.range(0.toBigDecimal()..100.toBigDecimal()) { range ->
+                        "价格必须在${range.start}和${range.endInclusive}之间"
+                    }
+                }
+            }
+            entity {
+                it.copy(name = it.name.uppercase())
+            }
+        }
+        api<Book, BookInput>("/book") {
             filter {
+//                where(specification<BookSpec>())
                 where(
-                    `ilike?`(table::name),
-                    `ilike?`(table.store::name),
-                    `between?`(table::price)
+                    table.name `ilike?` call.queryParameterExt<String>("name").defaultValue(),
+                    `between?`(table::price),
                 )
 
                 where += table.authors {
@@ -31,34 +46,29 @@ fun Application.configureRouting() {
             }
 //            fetcher(BookView::class)
             fetcher {
-                with(creator){
-                    by {
-                        allScalarFields()
+                creator.by {
+                    name()
+                    store {
                         name()
-                        store {
-                            name()
-                            website()
-                        }
-                        authors {
-                            name()
-                            firstName()
-                            lastName()
-                        }
+                        website()
+                    }
+                    authors {
+                        name()
+                        firstName()
+                        lastName()
                     }
                 }
             }
             validator {
-                with(it){
-                    name.notBlank{ "姓名不能为空" }
+                with(it) {
+                    name.notBlank { "姓名不能为空" }
                     price.range(0.toBigDecimal()..100.toBigDecimal()) { range ->
                         "价格必须在${range.start}和${range.endInclusive}之间"
                     }
                 }
             }
             entity {
-                it.copy {
-                    name = it.name.uppercase()
-                }
+                it.copy(name = it.name.uppercase())
             }
         }
     }.getAllRoutes().forEach { log.info("Route: $it") }
