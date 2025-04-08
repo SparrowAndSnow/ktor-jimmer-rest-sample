@@ -5,33 +5,30 @@ import com.book.domain.entity.*
 import com.book.domain.entity.dto.BookInput
 import com.book.domain.entity.dto.BookSpec
 import com.book.domain.entity.dto.BookView
+import com.eimsound.ktor.route.api
 import io.ktor.server.application.*
 import io.ktor.server.resources.Resources
 import io.ktor.server.routing.*
 import org.babyfish.jimmer.sql.kt.ast.expression.*
-import com.eimsound.ktor.route.*
 import dev.hayden.KHealth
-import java.math.BigDecimal
 
 fun Application.configureRouting() {
     install(Resources)
     install(KHealth)
     routing {
         api<Book>("/book") {
+//            filter(BookSpec::class)
             filter {
-                where(specification<BookSpec>())
                 where(
-                    table.name `ilike?` param<String>("name"),
-
+                    table.name `ilike?` get("name"),
                     table.price.`between?`(
-                        param<BigDecimal>("price", "ge"),
-                        param<BigDecimal>("price", "le")
+                        get("price", "ge"),
+                        this["price", "le"]
                     )
-//                    `between?`(table::price),
                 )
 
                 where += table.authors {
-                    firstName `ilike?` this@filter.param<String>("firstName")
+                    firstName `ilike?` this@filter["firstName"]
                 }
                 orderBy(table.id.desc())
             }
@@ -39,6 +36,8 @@ fun Application.configureRouting() {
             fetcher {
                 creator.by {
                     name()
+                    edition()
+                    price()
                     store {
                         name()
                         website()
@@ -50,11 +49,13 @@ fun Application.configureRouting() {
                     }
                 }
             }
-            validator {
-                with(it) {
-                    ::name.notNull { "姓名不能为空" }
-                    ::price.range(0.toBigDecimal()..100.toBigDecimal()) { range ->
-                        "价格必须在${range.start}和${range.endInclusive}之间"
+            input(BookInput::class) {
+                validator {
+                    with(it) {
+                        ::name.notBlank { "姓名不能为空" }
+                        ::price.range(0.toBigDecimal()..100.toBigDecimal()) { range ->
+                            "价格必须在${range.start}和${range.endInclusive}之间"
+                        }
                     }
                 }
             }
