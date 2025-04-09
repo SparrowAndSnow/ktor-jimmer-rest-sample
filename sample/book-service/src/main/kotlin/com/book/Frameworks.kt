@@ -30,16 +30,23 @@ fun Application.configureFrameworks() {
             single<ApplicationEnvironment> { environment }
             single<KSqlClient> { database(environment) }
             single<Consul>(createdAtStart = true) { consul(environment) }
-            single<HttpClient> { httpClient(environment)  }
+            single<HttpClient> { httpClient(environment) }
             single<ObjectMapper> { ObjectMapper().apply { registerModule() } }
         })
         modules(ApplicationModule().module)
     }
-    install(JimmerRest){
+    install(JimmerRest) {
         jimmerSqlClientFactory {
             inject<KSqlClient>()
         }
-        pageConfiguration {
+        parser {
+            register<IntRange> {
+                val split = split("-")
+                IntRange(split[0].toInt(), split[1].toInt())
+            }
+        }
+
+        pager {
             defaultPageSize = 10
             defaultPageIndex = 0
             pageIndexParameterName = "pageIndex"

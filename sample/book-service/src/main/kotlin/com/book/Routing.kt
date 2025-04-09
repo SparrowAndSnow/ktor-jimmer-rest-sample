@@ -2,9 +2,9 @@ package com.book
 
 import com.eimsound.ktor.provider.*
 import com.book.domain.entity.*
-import com.book.domain.entity.dto.BookInput
-import com.book.domain.entity.dto.BookSpec
-import com.book.domain.entity.dto.BookView
+//import com.book.domain.entity.dto.BookInput
+//import com.book.domain.entity.dto.BookSpec
+//import com.book.domain.entity.dto.BookView
 import com.eimsound.ktor.route.api
 import io.ktor.server.application.*
 import io.ktor.server.resources.Resources
@@ -24,7 +24,8 @@ fun Application.configureRouting() {
                     table.price.`between?`(
                         get("price", "ge"),
                         this["price", "le"]
-                    )
+                    ),
+                    `between?`(table::edition)
                 )
 
                 where += table.authors {
@@ -49,15 +50,18 @@ fun Application.configureRouting() {
                     }
                 }
             }
-            input(BookInput::class) {
+            input {
                 validator {
                     with(it) {
                         ::name.notBlank { "姓名不能为空" }
                         ::price.range(0.toBigDecimal()..100.toBigDecimal()) { range ->
                             "价格必须在${range.start}和${range.endInclusive}之间"
                         }
+//                        ::storeId.notNull { "" }
                     }
                 }
+            }.transform {
+                it
             }
         }
     }.getAllRoutes().forEach { log.info("Route: $it") }
