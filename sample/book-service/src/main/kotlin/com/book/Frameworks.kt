@@ -15,6 +15,7 @@ import com.fasterxml.jackson.databind.ObjectMapper
 import com.orbitz.consul.Consul
 import io.ktor.client.*
 import io.ktor.http.HttpStatusCode
+import io.ktor.http.parsing.ParseException
 import io.ktor.server.plugins.statuspages.StatusPages
 import io.ktor.server.response.respond
 import io.ktor.server.response.respondText
@@ -63,6 +64,10 @@ fun Application.configureFrameworks() {
     }
 
     install(StatusPages) {
+        exception<ParseException> { call, cause ->
+            call.respondText(cause.message, status = HttpStatusCode.BadRequest)
+        }
+
         exception<ValidationException> { call, cause ->
             call.respond(cause.httpStatusCode, cause.errors)
         }
