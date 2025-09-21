@@ -30,8 +30,8 @@ fun Application.configureFrameworks() {
         modules(module {
             single<ApplicationEnvironment> { environment }
             single<KSqlClient> { database(environment) }
-            single<Consul>(createdAtStart = true) { consul(environment) }
-            single<HttpClient> { httpClient(environment) }
+//            single<Consul>(createdAtStart = true) { consul(environment) }
+//            single<HttpClient> { httpClient(environment) }
             single<ObjectMapper> { ObjectMapper().apply { registerModule() } }
         })
         modules(ApplicationModule().module)

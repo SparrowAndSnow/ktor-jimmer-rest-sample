@@ -30,12 +30,12 @@ fun Application.configureRouting() {
                     `between?`(table::edition)
                 )
 
-                where(
-                    table.id valueIn subQuery(Author::class) {
-                        where(table.firstName eq "Alex")
-                        select(table.books.id)
-                    }
-                )
+//                where(
+//                    table.id valueIn subQuery(Author::class) {
+//                        where(table.firstName eq "Alex")
+//                        select(table.books.id)
+//                    }
+//                )
 
                 where += table.authors {
                     firstName `ilike?` this@filter["firstName"]

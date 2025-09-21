@@ -8,10 +8,13 @@ plugins {
 group = "com.example"
 version = "0.0.1"
 
-
+ksp{
+    arg("jimmer.dto.mutable", "true")
+}
 
 repositories {
     maven("https://mirrors.tencent.com/nexus/repository/maven-public/")
+    maven("https://jitpack.io")
     mavenCentral()
 }
 

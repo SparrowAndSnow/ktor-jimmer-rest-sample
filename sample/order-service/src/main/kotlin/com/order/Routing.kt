@@ -19,14 +19,14 @@ fun Application.configureRouting() {
     val httpClient by inject<HttpClient>()
     install(KHealth)
     routing {
-        route("/book") {
-            get("/{id}") {
-                val id = call.defaultPathVariable.parse(entityIdType<Book>())
-                val response = httpClient.get("http://ktor-sample-book-service/book/$id")
-                val body = response.body<Book>()
-                call.respond(body)
-            }
-        }
+//        route("/book") {
+//            get("/{id}") {
+//                val id = call.defaultPathVariable.parse(entityIdType<Book>())
+//                val response = httpClient.get("http://ktor-sample-book-service/book/$id")
+//                val body = response.body<Book>()
+//                call.respond(body)
+//            }
+//        }
     }.getAllRoutes().forEach { log.info("Route: $it") }
 }
 

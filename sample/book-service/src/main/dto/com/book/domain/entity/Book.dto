@@ -1,8 +1,9 @@
+export com.book.domain.entity.Book
+
 BookView{
     name
     edition
     price
-
 }
 
 specification BookSpec{
