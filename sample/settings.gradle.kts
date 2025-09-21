@@ -3,14 +3,15 @@ plugins {
 }
 rootProject.name = "sample"
 
-includeBuild("../ktor-jimmer-rest/ktor-jimmer-rest")
-
-dependencyResolutionManagement{
+dependencyResolutionManagement {
     repositories {
-        maven("https://mirrors.tencent.com/nexus/repository/maven-public/")
+        maven("https://jitpack.io")
+//        maven("https://mirrors.tencent.com/nexus/repository/maven-public/")
         mavenCentral()
     }
 }
 
 include("book-service")
 include("order-service")
+
+includeBuild("../ktor-jimmer-rest/ktor-jimmer-rest")

@@ -17,7 +17,9 @@ fun Application.configureRouting() {
     install(KHealth)
     routing {
         api<Book>("/book") {
-//            filter(BookSpec::class)
+//            filter(BookSpec::class){
+//                orderBy(table.price.asc())
+//            }
             filter {
                 where(
                     table.name `ilike?` get("name"),
@@ -28,6 +30,13 @@ fun Application.configureRouting() {
                     `between?`(table::edition)
                 )
 
+                where(
+                    table.id valueIn subQuery(Author::class) {
+                        where(table.firstName eq "Alex")
+                        select(table.books.id)
+                    }
+                )
+
                 where += table.authors {
                     firstName `ilike?` this@filter["firstName"]
                 }
@@ -35,7 +44,7 @@ fun Application.configureRouting() {
             }
 //            fetcher(BookView::class)
             fetcher {
-                creator.by {
+                fetch.by {
                     name()
                     edition()
                     price()
@@ -50,18 +59,20 @@ fun Application.configureRouting() {
                     }
                 }
             }
+
+//            input(BookInput::class) {}
             input {
                 validator {
                     with(it) {
-                        ::name.notBlank { "姓名不能为空" }
+                        ::name.notBlank { "名称不能为空" }
                         ::price.range(0.toBigDecimal()..100.toBigDecimal()) { range ->
                             "价格必须在${range.start}和${range.endInclusive}之间"
                         }
-//                        ::storeId.notNull { "" }
                     }
                 }
-            }.transform {
-                it
+                transformer {
+                    it.copy { name = it.name.uppercase() }
+                }
             }
         }
     }.getAllRoutes().forEach { log.info("Route: $it") }
