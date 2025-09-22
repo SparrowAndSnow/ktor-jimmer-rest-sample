@@ -2,10 +2,17 @@ package com.book
 
 import com.eimsound.ktor.provider.*
 import com.book.domain.entity.*
+import com.book.domain.entity.dto.BookSpec
 //import com.book.domain.entity.dto.BookInput
 //import com.book.domain.entity.dto.BookSpec
 //import com.book.domain.entity.dto.BookView
 import com.eimsound.ktor.route.api
+import com.eimsound.ktor.route.id
+import com.eimsound.ktor.route.list
+import com.eimsound.util.ktor.get
+import com.eimsound.util.ktor.path
+import com.eimsound.util.ktor.query
+import com.eimsound.util.ktor.specification
 import io.ktor.server.application.*
 import io.ktor.server.resources.Resources
 import io.ktor.server.routing.*
@@ -22,10 +29,10 @@ fun Application.configureRouting() {
 //            }
             filter {
                 where(
-                    table.name `ilike?` get("name"),
+                    table.name `ilike?` call.query("name"),
                     table.price.`between?`(
-                        get("price", "ge"),
-                        this["price", "le"]
+                        call["price", "ge"],
+                        call["price", "le"]
                     ),
                     `between?`(table::edition)
                 )
@@ -38,7 +45,7 @@ fun Application.configureRouting() {
 //                )
 
                 where += table.authors {
-                    firstName `ilike?` this@filter["firstName"]
+                    firstName `ilike?` this@filter.call.query("firstName")
                 }
                 orderBy(table.id.desc())
             }
