@@ -30,6 +30,7 @@ services:
     image: postgres:latest
     restart: unless-stopped
     volumes:
+      - ./init-postgres.sql:/docker-entrypoint-initdb.d/init.sql
       - /data/docker-compose/postgres:/var/lib/postgresql/data
     ports:
       - "5432:5432"
