@@ -11,14 +11,13 @@ import org.koin.ktor.plugin.Koin
 import org.koin.logger.slf4jLogger
 import com.eimsound.ktor.plugin.*
 import com.eimsound.ktor.validator.exception.ValidationException
-import com.fasterxml.jackson.databind.ObjectMapper
 import com.orbitz.consul.Consul
-import io.ktor.client.*
 import io.ktor.http.HttpStatusCode
 import io.ktor.http.parsing.ParseException
 import io.ktor.server.plugins.statuspages.StatusPages
 import io.ktor.server.response.respond
 import io.ktor.server.response.respondText
+import tools.jackson.databind.json.JsonMapper
 
 @Module
 @ComponentScan("com.example")
@@ -32,7 +31,7 @@ fun Application.configureFrameworks() {
             single<KSqlClient> { database(environment) }
 //            single<Consul>(createdAtStart = true) { consul(environment) }
 //            single<HttpClient> { httpClient(environment) }
-            single<ObjectMapper> { ObjectMapper().apply { registerModule() } }
+            single<JsonMapper> { JsonMapper().apply { registeredModules() } }
         })
         modules(ApplicationModule().module)
     }

@@ -1,16 +1,15 @@
 [versions]
-kotlin = "2.2.20"
-ktor = "3.3.0"
-ksp = "2.2.20-2.0.3"
-coroutines = "1.10.2"
+kotlin = "2.4.10"
+ktor = "3.5.2"
+ksp = "2.3.11"
+coroutines = "1.11.0"
 logback = "1.5.18"
 postgres = "42.7.4"
 mysql = "8.0.33"
 hikari = "5.1.0"
-koin = "4.1.1"
+koin = "4.2.2"
 koin-annotations = "2.0.0"
-jimmer = "0.9.110"
-jackson-datatype-jsr310 = "2.18.0"
+jimmer = "0.11.5"
 consul = "1.5.3"
 khealth = "3.0.2"
 [libraries]
@@ -20,8 +19,7 @@ ktor-server-auth-jwt = { module = "io.ktor:ktor-server-auth-jwt-jvm", version.re
 ktor-server-netty = { module = "io.ktor:ktor-server-netty-jvm", version.ref = "ktor" }
 ktor-server-cors = { module = "io.ktor:ktor-server-cors", version.ref = "ktor" }
 ktor-server-content-negotiation = { module = "io.ktor:ktor-server-content-negotiation", version.ref = "ktor" }
-ktor-serialization-jackson = { module = "io.ktor:ktor-serialization-jackson", version.ref = "ktor" }
-jackson-datatype-jsr310 = { module = "com.fasterxml.jackson.datatype:jackson-datatype-jsr310", version.ref = "jackson-datatype-jsr310" }
+ktor-serialization-jackson3 = { module = "io.ktor:ktor-serialization-jackson3", version.ref = "ktor" }
 ktor-server-resources = { module = "io.ktor:ktor-server-resources-jvm", version.ref = "ktor" }
 ktor-server-test-host = { module = "io.ktor:ktor-server-test-host-jvm", version.ref = "ktor" }
 ktor-server-status-pages = { module = "io.ktor:ktor-server-status-pages", version.ref = "ktor" }
@@ -51,8 +49,7 @@ api = [
     'ktor-server-netty',
     'ktor-server-cors',
     'ktor-server-content-negotiation',
-    'ktor-serialization-jackson',
-    'jackson-datatype-jsr310',
+    'ktor-serialization-jackson3',
     'ktor-server-resources',
     'ktor-server-status-pages',
     'koin',

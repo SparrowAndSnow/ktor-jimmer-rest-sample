@@ -18,6 +18,7 @@ import io.ktor.server.resources.Resources
 import io.ktor.server.routing.*
 import org.babyfish.jimmer.sql.kt.ast.expression.*
 import dev.hayden.KHealth
+import io.ktor.server.util.getValue
 
 fun Application.configureRouting() {
     install(Resources)
@@ -28,8 +29,10 @@ fun Application.configureRouting() {
 //                orderBy(table.price.asc())
 //            }
             filter {
+                val authorFirstName: String? by call.queryParameters
+                val name: String? by call.queryParameters
                 where(
-                    table.name `ilike?` call.query("name"),
+                    table.name `ilike?` name,
                     table.price.`between?`(
                         call["price", "ge"],
                         call["price", "le"]
@@ -43,9 +46,8 @@ fun Application.configureRouting() {
 //                        select(table.books.id)
 //                    }
 //                )
-
                 where += table.authors {
-                    firstName `ilike?` this@filter.call.query("firstName")
+                    firstName `ilike?` authorFirstName
                 }
                 orderBy(table.id.desc())
             }
