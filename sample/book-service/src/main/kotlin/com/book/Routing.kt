@@ -14,6 +14,7 @@ import com.eimsound.util.ktor.specification
 import io.ktor.server.application.*
 import io.ktor.server.resources.Resources
 import io.ktor.server.routing.*
+import org.babyfish.jimmer.sql.ast.mutation.SaveMode
 import org.babyfish.jimmer.sql.kt.ast.expression.*
 import dev.hayden.KHealth
 import io.ktor.server.util.getValue
@@ -28,14 +29,10 @@ fun Application.configureRouting() {
 //            }
             filter {
                 val authorFirstName: String? by call.queryParameters
-                val name: String? by call.queryParameters
                 where(
-                    table.name `ilike?` name,
-                    table.price.`between?`(
-                        call["price", "ge"],
-                        call["price", "le"]
-                    ),
-                    `between?`(table::edition)
+                    `ilike?`(table::name),           // ?name__start=GraphQL&name__exact=...
+                    `in?`(table::edition),           // ?edition=1,2
+                    `between?`(table::price)         // ?price__ge=50&price__le=80
                 )
 
 //                where(
@@ -47,6 +44,7 @@ fun Application.configureRouting() {
                 where += table.authors {
                     firstName `ilike?` authorFirstName
                 }
+                sort()                               // ?sort=price,desc&sort=id,asc
                 orderBy(table.id.desc())
             }
 //            fetcher(BookView::class)
@@ -81,6 +79,28 @@ fun Application.configureRouting() {
                     it.copy { name = it.name.uppercase() }
                 }
             }
+
+            // create/edit 独立配置：保存模式 + 响应投影
+            create {
+                saveMode = SaveMode.UPSERT           // 同业务键重复提交 = 更新（upsert）
+                fetcher {
+                    fetch.by {
+                        name()
+                        edition()
+                        price()
+                    }
+                }
+            }
+            edit {
+                fetcher {
+                    fetch.by {
+                        name()
+                        edition()
+                        price()
+                    }
+                }
+            }
+            patch { }                                // 启用 PATCH 部分更新（复用 edit 配置）
         }
     }.getAllRoutes().forEach { log.info("Route: $it") }
 }
