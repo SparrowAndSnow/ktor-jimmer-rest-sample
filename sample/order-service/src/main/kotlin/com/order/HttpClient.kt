@@ -3,18 +3,15 @@ package com.order
 import io.ktor.client.*
 import io.ktor.client.engine.cio.*
 import io.ktor.client.plugins.contentnegotiation.*
-import io.ktor.serialization.jackson.*
+import io.ktor.serialization.jackson3.jackson
 import io.ktor.server.application.*
+import org.babyfish.jimmer.jackson.v3.ImmutableModuleV3
 
-
-fun httpClient(environment: ApplicationEnvironment ): HttpClient {
+fun httpClient(environment: ApplicationEnvironment): HttpClient {
     val client = HttpClient(CIO) {
-        install(ConsulFeature) {
-            consulUrl = environment.config.property("consul.url").getString()
-        }
-        install(ContentNegotiation){
-            jackson{
-                registerModule()
+        install(ContentNegotiation) {
+            jackson {
+                addModule(ImmutableModuleV3())
             }
         }
     }
