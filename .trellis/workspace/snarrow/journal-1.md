@@ -47,3 +47,24 @@
 ### Status
 
 [OK] **Completed**
+
+
+## Session 3: 参数映射加固与路由小坑修正
+
+**Date**: 2026-08-13
+**Task**: 参数映射加固与路由小坑修正
+**Branch**: `main`
+
+### Summary
+
+F2+D1+D2+D3：新增 ParameterNames 组件（bound receiver 清晰报错、javaTable getter 按类缓存、根/嵌套参数名解析），filter 扩展接入并加 D3 根属性同名冲突 fail-fast；id/remove 按注册 pathVariable 取参（嵌套路由不再取错）；key() 语义补 KDoc；收敛删除旧反射 helper。28 个测试全绿，sample 无新增编译错误。
+
+### Git Commits
+
+| Hash | Message |
+|------|---------|
+| `ffec5a6` | (see git log) |
+
+### Status
+
+[OK] **Completed**
