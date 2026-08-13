@@ -64,8 +64,9 @@ Questions to answer:
 任何国内镜像（腾讯 Maven/Gradle 镜像）都会导致构建超时或失败，发版时必须遵守：
 
 1. `jitpack.yml` 的 `jdk` 只能用 JitPack 支持的版本（最高 `openjdk21`），不支持 `openjdk25`。
-2. `jitpack.yml` 中不存在 `subdirectory` 字段（非官方配置），子目录工程一律在 `install` 中
-   `cd` 到 Gradle 根目录（当前为两层嵌套：`ktor-jimmer-rest/ktor-jimmer-rest`）。
+2. `jitpack.yml` 用 `subdirectory: "ktor-jimmer-rest"` 声明工程子目录，`install` 中再
+   `cd ./ktor-jimmer-rest` 进入 Gradle 根目录后执行 `./gradlew publishToMavenLocal --no-daemon`
+   （该写法已在 JitPack 构建验证通过，勿改为其它路径组合）。
 3. `settings.gradle.kts` 依赖仓库按 `System.getenv("JITPACK") == "true"` 分支：JitPack 构建机
    只用 `mavenCentral()`；本地开发保留腾讯镜像加速。
 4. `gradle/wrapper/gradle-wrapper.properties` 的 `distributionUrl` 必须指向
