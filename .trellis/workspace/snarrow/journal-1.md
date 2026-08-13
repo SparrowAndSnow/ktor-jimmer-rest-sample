@@ -105,7 +105,7 @@ api<T> 改为注册期求值（block 只执行一次，ApiConfig 纯配置，fil
 
 | Hash | Message |
 |------|---------|
-| `PARENT_COMMIT` | (see git log) |
+| `54d3138` | (see git log) |
 
 ### Status
 
