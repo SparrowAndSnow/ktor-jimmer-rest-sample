@@ -10,13 +10,9 @@ import org.koin.ktor.ext.inject
 import org.koin.ktor.plugin.Koin
 import org.koin.logger.slf4jLogger
 import com.eimsound.ktor.plugin.*
-import com.eimsound.ktor.validator.exception.ValidationException
 import com.orbitz.consul.Consul
-import io.ktor.http.HttpStatusCode
-import io.ktor.http.parsing.ParseException
 import io.ktor.server.plugins.statuspages.StatusPages
-import io.ktor.server.response.respond
-import io.ktor.server.response.respondText
+import com.eimsound.ktor.validator.jimmerRestErrors
 import tools.jackson.databind.json.JsonMapper
 
 @Module
@@ -63,17 +59,6 @@ fun Application.configureFrameworks() {
     }
 
     install(StatusPages) {
-        exception<ParseException> { call, cause ->
-            call.respondText(cause.message, status = HttpStatusCode.BadRequest)
-        }
-
-        exception<ValidationException> { call, cause ->
-            call.respond(cause.httpStatusCode, cause.errors)
-        }
-
-        exception<Throwable> { call, cause ->
-            call.respondText(text = "${cause.message}", status = HttpStatusCode.InternalServerError)
-        }
+        jimmerRestErrors()
     }
 }
-
