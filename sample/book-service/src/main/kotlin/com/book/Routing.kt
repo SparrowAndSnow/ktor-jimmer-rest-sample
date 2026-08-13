@@ -6,9 +6,7 @@ import com.book.domain.entity.dto.BookSpec
 //import com.book.domain.entity.dto.BookInput
 //import com.book.domain.entity.dto.BookSpec
 //import com.book.domain.entity.dto.BookView
-import com.eimsound.ktor.route.api
-import com.eimsound.ktor.route.id
-import com.eimsound.ktor.route.list
+import com.eimsound.ktor.route.*
 import com.eimsound.util.ktor.get
 import com.eimsound.util.ktor.path
 import com.eimsound.util.ktor.query
