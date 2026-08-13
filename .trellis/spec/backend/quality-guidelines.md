@@ -58,6 +58,24 @@ Questions to answer:
 
 ---
 
+## JitPack 发版配置（已确认约定）
+
+框架通过 JitPack 对外发布（仓库：eimsound/ktor-jimmer-rest）。JitPack 构建机在国内网络不可达，
+任何国内镜像（腾讯 Maven/Gradle 镜像）都会导致构建超时或失败，发版时必须遵守：
+
+1. `jitpack.yml` 的 `jdk` 只能用 JitPack 支持的版本（最高 `openjdk21`），不支持 `openjdk25`。
+2. `jitpack.yml` 中不存在 `subdirectory` 字段（非官方配置），子目录工程一律在 `install` 中
+   `cd` 到 Gradle 根目录（当前为两层嵌套：`ktor-jimmer-rest/ktor-jimmer-rest`）。
+3. `settings.gradle.kts` 依赖仓库按 `System.getenv("JITPACK") == "true"` 分支：JitPack 构建机
+   只用 `mavenCentral()`；本地开发保留腾讯镜像加速。
+4. `gradle/wrapper/gradle-wrapper.properties` 的 `distributionUrl` 必须指向
+   `services.gradle.org`（官方发行版），不能用国内镜像。
+5. `gradle.properties` 中 `version` 即发布版本；打 tag 前先本地跑
+   `JITPACK=true bash gradlew publishToMavenLocal` 验证。
+6. JitPack 构建环境变量：`JITPACK=true`、`GIT_COMMIT`、`VERSION`（tag 名）。
+
+---
+
 ## Testing Requirements
 
 <!-- What level of testing is expected -->
