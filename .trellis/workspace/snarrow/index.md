@@ -8,7 +8,7 @@
 
 <!-- @@@auto:current-status -->
 - **Active File**: `journal-1.md`
-- **Total Sessions**: 4
+- **Total Sessions**: 5
 - **Last Active**: 2026-08-13
 <!-- @@@/auto:current-status -->
 
@@ -19,7 +19,7 @@
 <!-- @@@auto:active-documents -->
 | File | Lines | Status |
 |------|-------|--------|
-| `journal-1.md` | ~91 | Active |
+| `journal-1.md` | ~112 | Active |
 <!-- @@@/auto:active-documents -->
 
 ---
@@ -29,6 +29,7 @@
 <!-- @@@auto:session-history -->
 | # | Date | Title | Commits | Branch |
 |---|------|-------|---------|--------|
+| 5 | 2026-08-13 | 写操作增强与 Provider/Route 架构重构 | PARENT_COMMIT | `main` |
 | 4 | 2026-08-13 | filter DSL 补齐：操作符、ext 与动态排序 | 6b5f12d | `main` |
 | 3 | 2026-08-13 | 参数映射加固与路由小坑修正 | `ffec5a6` | `main` |
 | 2 | 2026-08-13 | 测试地基：route 级测试与参数映射测试 | `1160239` | `main` |

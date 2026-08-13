@@ -89,3 +89,24 @@ B1+B2+B3：eq? 改为确定性解析（无后缀优先、__exact 兜底）；新
 ### Status
 
 [OK] **Completed**
+
+
+## Session 5: 写操作增强与 Provider/Route 架构重构
+
+**Date**: 2026-08-13
+**Task**: 写操作增强与 Provider/Route 架构重构
+**Branch**: `main`
+
+### Summary
+
+api<T> 改为注册期求值（block 只执行一次，ApiConfig 纯配置，filter/key 请求期 lambda）；create/edit 独立配置块、SaveMode 可配置（UPSERT）、响应 fetcher 投影、PATCH 按需注册；id/remove 提取 resolveKey，findById 投影去重。52 个测试全绿，sample 适配导入后仅剩既有 HttpClient.kt 错误。
+
+### Git Commits
+
+| Hash | Message |
+|------|---------|
+| `PARENT_COMMIT` | (see git log) |
+
+### Status
+
+[OK] **Completed**
