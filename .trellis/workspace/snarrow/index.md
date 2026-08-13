@@ -29,7 +29,7 @@
 <!-- @@@auto:session-history -->
 | # | Date | Title | Commits | Branch |
 |---|------|-------|---------|--------|
-| 4 | 2026-08-13 | filter DSL 补齐：操作符、ext 与动态排序 | FILTER_PLACEHOLDER | `main` |
+| 4 | 2026-08-13 | filter DSL 补齐：操作符、ext 与动态排序 | 6b5f12d | `main` |
 | 3 | 2026-08-13 | 参数映射加固与路由小坑修正 | `ffec5a6` | `main` |
 | 2 | 2026-08-13 | 测试地基：route 级测试与参数映射测试 | `1160239` | `main` |
 | 1 | 2026-08-13 | 更新项目文档：README、文档站（中英）与示例说明 | `0c718d6` | `main` |

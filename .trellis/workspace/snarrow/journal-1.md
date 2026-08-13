@@ -84,7 +84,7 @@ B1+B2+B3：eq? 改为确定性解析（无后缀优先、__exact 兜底）；新
 
 | Hash | Message |
 |------|---------|
-| `FILTER_PLACEHOLDER` | (see git log) |
+| `6b5f12d` | (see git log) |
 
 ### Status
 
