@@ -68,3 +68,24 @@ F2+D1+D2+D3：新增 ParameterNames 组件（bound receiver 清晰报错、javaT
 ### Status
 
 [OK] **Completed**
+
+
+## Session 4: filter DSL 补齐：操作符、ext 与动态排序
+
+**Date**: 2026-08-13
+**Task**: filter DSL 补齐：操作符、ext 与动态排序
+**Branch**: `main`
+
+### Summary
+
+B1+B2+B3：eq? 改为确定性解析（无后缀优先、__exact 兜底）；新增 in?/notIn?/lt?/gt?/le?/ge?/notEq?/isNull；新增 sort() 动态排序（多字段多方向，非法输入 400）；Condition.kt 重命名为 FilterDsl.kt。45 个测试全绿，sample 无新增编译错误。
+
+### Git Commits
+
+| Hash | Message |
+|------|---------|
+| `FILTER_PLACEHOLDER` | (see git log) |
+
+### Status
+
+[OK] **Completed**
