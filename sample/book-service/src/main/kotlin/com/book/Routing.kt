@@ -100,7 +100,11 @@ fun Application.configureRouting() {
                     }
                 }
             }
-            patch { }                                // 启用 PATCH 部分更新（复用 edit 配置）
+            patch { }                                // 启用 PATCH 部分更新（独立配置，默认同 PUT 语义）
+            batch {                                  // 启用批量端点（复用 create/edit 配置）
+                // path = "bulk"                      // 可自定义路径：POST /book/bulk
+                // deleteIdsParameterName = "bookIds" // 批量删除参数名：?bookIds=1,2
+            }
         }
     }.getAllRoutes().forEach { log.info("Route: $it") }
 }
