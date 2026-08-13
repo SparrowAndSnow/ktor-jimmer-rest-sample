@@ -63,6 +63,13 @@ cd sample
 # 列表 + 过滤 + 分页
 curl "http://localhost:8081/book?name__start=GraphQL&price__ge=50&pageIndex=0&pageSize=10"
 
+# 动态排序
+curl "http://localhost:8081/book?sort=price,desc&sort=id,asc"
+
+# 计数 / 存在性
+curl http://localhost:8081/book/count
+curl http://localhost:8081/book/exists/1
+
 # 查询单个
 curl http://localhost:8081/book/1
 
@@ -76,9 +83,20 @@ curl -X PUT http://localhost:8081/book \
   -H "Content-Type: application/json" \
   -d '{"id":1,"name":"Learning GraphQL","edition":1,"price":55}'
 
+# 部分更新（PATCH）
+curl -X PATCH http://localhost:8081/book \
+  -H "Content-Type: application/json" \
+  -d '{"id":1,"price":55}'
+
+# 批量创建 / 批量删除
+curl -X POST http://localhost:8081/book/batch \
+  -H "Content-Type: application/json" \
+  -d '[{"name":"Learning GraphQL","edition":1,"price":50},{"name":"Effective TypeScript","edition":1,"price":73}]'
+curl -X DELETE "http://localhost:8081/book/batch?ids=1,2"
+
 # 删除
 curl -X DELETE http://localhost:8081/book/1
 ```
 
-查询参数的映射规则（`ilike?`、`between?`、嵌套表字段等）见
+查询参数的映射规则（`eq?`、`in?`、`lt?`/`gt?`、`ilike?`、`between?`、`sort()`、嵌套表字段等）见
 [快速开始](../ktor-jimmer-rest/docs/docs/zh/quick-start.md)。
