@@ -152,3 +152,24 @@ C6：GET {path}/count（过滤计数，fetchUnlimitedCount）与 GET {path}/exis
 ### Status
 
 [OK] **Completed**
+
+
+## Session 8: 自定义动作扩展点与复合主键边界
+
+**Date**: 2026-08-13
+**Task**: 自定义动作扩展点与复合主键边界
+**Branch**: `main`
+
+### Summary
+
+C7：api<T> 新增 action {} 配置块，注册期注册自定义路由（内置路由之后）；C8：实证 Jimmer KSP 拒绝多 @Id，entityIdType 增加防御性校验与 KDoc，复合主键明确不支持并推荐代理主键 + @Key。67 个测试全绿。
+
+### Git Commits
+
+| Hash | Message |
+|------|---------|
+| `82d5c1e` | (see git log) |
+
+### Status
+
+[OK] **Completed**
