@@ -26,3 +26,24 @@
 ### Status
 
 [OK] **Completed**
+
+
+## Session 2: 测试地基：route 级测试与参数映射测试
+
+**Date**: 2026-08-13
+**Task**: 测试地基：route 级测试与参数映射测试
+**Branch**: `main`
+
+### Summary
+
+为框架建立测试基线：JUnit5 + Ktor test host + H2 内存库 + jimmer-ksp 测试实体。19 个测试覆盖 5 条 CRUD 路由（命中/404、过滤/分页/关闭分页/空列表、校验/转换、更新、幂等删除、解析错误 400）与参数映射（根表/嵌套表/ext/缺参）。src/main 零改动。发现 sample HttpClient.kt 既有编译问题（jackson 包迁移 + ConsulFeature 未定义），留给后续任务。
+
+### Git Commits
+
+| Hash | Message |
+|------|---------|
+| `1160239` | (see git log) |
+
+### Status
+
+[OK] **Completed**
