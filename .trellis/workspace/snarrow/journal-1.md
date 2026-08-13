@@ -110,3 +110,24 @@ api<T> 改为注册期求值（block 只执行一次，ApiConfig 纯配置，fil
 ### Status
 
 [OK] **Completed**
+
+
+## Session 6: 批量操作与 endpoint 配置化
+
+**Date**: 2026-08-13
+**Task**: 批量操作与 endpoint 配置化
+**Branch**: `main`
+
+### Summary
+
+C2 批量端点：batch {} 按需注册 POST/PUT/DELETE {path}/batch（BatchConfig 可配路径/操作开关/删除参数名）；patch {} 独立配置（与 PUT 分离）；批量/单条共用 SaveProvider.prepareEntity；字面量收进 EndpointConfiguration（batchPath/batchIdsParameterName/sortParameterName）。61 个测试全绿，sample 示例更新。
+
+### Git Commits
+
+| Hash | Message |
+|------|---------|
+| `4bc0896` | (see git log) |
+
+### Status
+
+[OK] **Completed**
