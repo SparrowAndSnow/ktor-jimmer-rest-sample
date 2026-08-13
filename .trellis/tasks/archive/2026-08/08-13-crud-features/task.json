@@ -1,0 +1,31 @@
+{
+  "id": "crud-features",
+  "name": "crud-features",
+  "title": "CRUD 功能补齐：SaveMode、批量、错误响应等",
+  "description": "C1-C8：SaveMode 可配置、批量操作、错误响应统一、响应投影、PATCH、count/exists、自定义动作、复合主键",
+  "status": "completed",
+  "dev_type": null,
+  "scope": null,
+  "package": null,
+  "priority": "P2",
+  "creator": "snarrow",
+  "assignee": "snarrow",
+  "createdAt": "2026-08-13",
+  "completedAt": "2026-08-13",
+  "branch": null,
+  "base_branch": "main",
+  "worktree_path": null,
+  "commit": null,
+  "pr_url": null,
+  "subtasks": [],
+  "children": [
+    "08-13-crud-mutations",
+    "08-13-crud-batch",
+    "08-13-crud-queries-errors",
+    "08-13-crud-edge"
+  ],
+  "parent": "08-13-framework-issues",
+  "relatedFiles": [],
+  "notes": "",
+  "meta": {}
+}
