@@ -173,3 +173,24 @@ C7：api<T> 新增 action {} 配置块，注册期注册自定义路由（内置
 ### Status
 
 [OK] **Completed**
+
+
+## Session 9: 文档同步与收尾（E1 + 全量验收）
+
+**Date**: 2026-08-13
+**Task**: 文档同步与收尾（E1 + 全量验收）
+**Branch**: `main`
+
+### Summary
+
+docs-sync：README/文档站中英 quick-start/首页/sample README 同步全部新 DSL（filter 操作符、sort、create/edit/patch/batch、endpoint 配置、count/exists、ApiError envelope、action），mkdocs build 通过无死链；sample 两个服务迁移 jackson3 并完整编译（book-service HttpClient、order-service Serialization/HttpClient/Frameworks）；父任务 framework-issues 跨任务验收完成（A1-A4 全部达成）并归档，crud-features 归档。67 个测试全绿。
+
+### Git Commits
+
+| Hash | Message |
+|------|---------|
+| `cac8822` | (see git log) |
+
+### Status
+
+[OK] **Completed**
