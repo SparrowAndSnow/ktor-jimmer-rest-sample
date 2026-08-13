@@ -1,0 +1,32 @@
+{
+  "id": "framework-issues",
+  "name": "framework-issues",
+  "title": "框架问题修复：测试、filter DSL、CRUD 功能与文档",
+  "description": "按分析清单逐项修复框架：F1-F2 测试与映射加固，D1-D3 小坑，B1-B3 filter 补齐，C1-C8 CRUD 功能，E1 文档同步",
+  "status": "completed",
+  "dev_type": null,
+  "scope": null,
+  "package": null,
+  "priority": "P2",
+  "creator": "snarrow",
+  "assignee": "snarrow",
+  "createdAt": "2026-08-13",
+  "completedAt": "2026-08-13",
+  "branch": null,
+  "base_branch": "main",
+  "worktree_path": null,
+  "commit": null,
+  "pr_url": null,
+  "subtasks": [],
+  "children": [
+    "08-13-test-foundation",
+    "08-13-mapping-hardening",
+    "08-13-filter-dsl",
+    "08-13-crud-features",
+    "08-13-docs-sync"
+  ],
+  "parent": null,
+  "relatedFiles": [],
+  "notes": "",
+  "meta": {}
+}
