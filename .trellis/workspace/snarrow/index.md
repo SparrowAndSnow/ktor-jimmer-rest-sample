@@ -8,7 +8,7 @@
 
 <!-- @@@auto:current-status -->
 - **Active File**: `journal-1.md`
-- **Total Sessions**: 6
+- **Total Sessions**: 7
 - **Last Active**: 2026-08-13
 <!-- @@@/auto:current-status -->
 
@@ -19,7 +19,7 @@
 <!-- @@@auto:active-documents -->
 | File | Lines | Status |
 |------|-------|--------|
-| `journal-1.md` | ~133 | Active |
+| `journal-1.md` | ~154 | Active |
 <!-- @@@/auto:active-documents -->
 
 ---
@@ -29,6 +29,7 @@
 <!-- @@@auto:session-history -->
 | # | Date | Title | Commits | Branch |
 |---|------|-------|---------|--------|
+| 7 | 2026-08-13 | count/exists 端点与统一错误响应 | `6dd15a4` | `main` |
 | 6 | 2026-08-13 | 批量操作与 endpoint 配置化 | `4bc0896` | `main` |
 | 5 | 2026-08-13 | 写操作增强与 Provider/Route 架构重构 | 54d3138 | `main` |
 | 4 | 2026-08-13 | filter DSL 补齐：操作符、ext 与动态排序 | 6b5f12d | `main` |

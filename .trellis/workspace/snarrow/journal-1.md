@@ -131,3 +131,24 @@ C2 批量端点：batch {} 按需注册 POST/PUT/DELETE {path}/batch（BatchConf
 ### Status
 
 [OK] **Completed**
+
+
+## Session 7: count/exists 端点与统一错误响应
+
+**Date**: 2026-08-13
+**Task**: count/exists 端点与统一错误响应
+**Branch**: `main`
+
+### Summary
+
+C6：GET {path}/count（过滤计数，fetchUnlimitedCount）与 GET {path}/exists/{id}，始终注册，路径进 EndpointConfiguration（countPath/existsPath）；C3：ApiError envelope（status/code/message/errors）+ jimmerRestErrors() 一行接线 StatusPages，404 带 body，sample 改用。65 个测试全绿。约定已记录到 .trellis/spec/backend/quality-guidelines.md（端点字面量必须进配置）。
+
+### Git Commits
+
+| Hash | Message |
+|------|---------|
+| `6dd15a4` | (see git log) |
+
+### Status
+
+[OK] **Completed**
