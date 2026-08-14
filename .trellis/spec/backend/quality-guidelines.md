@@ -77,6 +77,23 @@ Questions to answer:
 
 ---
 
+## Filter DSL 关联过滤（已确认约定）
+
+对关联表（如 `Book.authors`）做过滤时，必须使用隐式子查询（EXISTS 语义），
+禁止用 `joinList` / `asTableEx()` 做显式 JOIN——多对多场景会数据重复并破坏分页。
+
+1. 入口：`where(Book::authors) { ... }`（`FilterScope.where(prop, block)` 重载，
+   与 `where(...)` / `where {}` 并存，Kotlin 重载自动区分）。
+2. 块内 receiver 是 `AssociationFilterScope`，可用全部 filter 操作符
+   （`eq?`/`ilike?`/`between?` 等，receiver 已泛化为 `FilterQueryScope`）。
+3. 参数名 = 关联属性名（复数）+ 分隔符 + 属性名，如 `Book::authors` + `firstName`
+   → `authors_firstName`（`subParameterSeparator` 默认 `_`）。
+4. `AssociationFilterScope` 不能委托 `KNonNullProps`（属性引用 receiver 会解析错乱），
+   块内一律写 `table::firstName` 而不是裸 `firstName`。
+5. 新增 filter 操作符时，receiver 声明为 `FilterQueryScope<T>`，使根表与子表块都可用。
+
+---
+
 ## Testing Requirements
 
 <!-- What level of testing is expected -->

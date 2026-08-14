@@ -28,7 +28,6 @@ fun Application.configureRouting() {
 //                orderBy(table.price.asc())
 //            }
             filter {
-                val authorFirstName: String? by call.queryParameters
                 where(
                     `ilike?`(table::name),           // ?name__start=GraphQL&name__exact=...
                     `in?`(table::edition),           // ?edition=1,2
@@ -41,11 +40,10 @@ fun Application.configureRouting() {
 //                        select(table.books.id)
 //                    }
 //                )
-                where += table.authors {
-                    firstName `ilike?` authorFirstName
+                where(Book::authors) {
+                    `ilike?`(table::firstName)
                 }
                 sort()                               // ?sort=price,desc&sort=id,asc
-                orderBy(table.id.desc())
             }
 //            fetcher(BookView::class)
             fetcher {
@@ -68,11 +66,9 @@ fun Application.configureRouting() {
 //            input(BookInput::class) {}
             input {
                 validator {
-                    with(it) {
-                        ::name.notBlank { "名称不能为空" }
-                        ::price.range(0.toBigDecimal()..100.toBigDecimal()) { range ->
-                            "价格必须在${range.start}和${range.endInclusive}之间"
-                        }
+                    it::name.notBlank { "名称不能为空" }
+                    it::price.range(0.toBigDecimal()..100.toBigDecimal()) { range ->
+                        "价格必须在${range.start}和${range.endInclusive}之间"
                     }
                 }
                 transformer {
@@ -108,7 +104,6 @@ fun Application.configureRouting() {
         }
     }.getAllRoutes().forEach { log.info("Route: $it") }
 }
-
 
 
 
