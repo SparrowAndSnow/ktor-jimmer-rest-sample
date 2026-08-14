@@ -8,7 +8,7 @@
 
 <!-- @@@auto:current-status -->
 - **Active File**: `journal-1.md`
-- **Total Sessions**: 12
+- **Total Sessions**: 13
 - **Last Active**: 2026-08-14
 <!-- @@@/auto:current-status -->
 
@@ -19,7 +19,7 @@
 <!-- @@@auto:active-documents -->
 | File | Lines | Status |
 |------|-------|--------|
-| `journal-1.md` | ~253 | Active |
+| `journal-1.md` | ~275 | Active |
 <!-- @@@/auto:active-documents -->
 
 ---
@@ -29,6 +29,7 @@
 <!-- @@@auto:session-history -->
 | # | Date | Title | Commits | Branch |
 |---|------|-------|---------|--------|
+| 13 | 2026-08-14 | 会话收尾：文档站上线 + 0.1.1 发布完成 | `1f1fffe`, `949a9b0` | `main` |
 | 12 | 2026-08-14 | 文档站部署：MkDocs + GitHub Pages workflow | - | `main` |
 | 11 | 2026-08-14 | 0.1.1 发版 + filter DSL 演进 + validator 健壮性 | - | `main` |
 | 10 | 2026-08-14 | filter 关联过滤 DSL：where(Book::authors){} | - | `main` |

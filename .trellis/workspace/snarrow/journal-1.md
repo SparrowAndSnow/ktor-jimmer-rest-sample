@@ -251,3 +251,25 @@ docs/ 本地构建验证通过（venv + requirements.lock，--strict 无错误�
 ### Status
 
 [OK] **Completed**
+
+
+## Session 13: 会话收尾：文档站上线 + 0.1.1 发布完成
+
+**Date**: 2026-08-14
+**Task**: 会话收尾：文档站上线 + 0.1.1 发布完成
+**Branch**: `main`
+
+### Summary
+
+文档站 https://eimsound.github.io/ktor-jimmer-rest/ 上线（Deploy Docs workflow success，中英文 200）。0.1.1 发布完成（main+tag 已 push）。本会话交付：filter DSL 演进（表达式形式/where 统一入口/嵌套关联/作用域修复）、validator 健壮性三项、JitPack 兼容配置、文档与 spec 同步、GitHub Pages 自动部署。工作区干净，无未完成任务。
+
+### Git Commits
+
+| Hash | Message |
+|------|---------|
+| `1f1fffe` | (see git log) |
+| `949a9b0` | (see git log) |
+
+### Status
+
+[OK] **Completed**
