@@ -8,7 +8,7 @@
 
 <!-- @@@auto:current-status -->
 - **Active File**: `journal-1.md`
-- **Total Sessions**: 11
+- **Total Sessions**: 12
 - **Last Active**: 2026-08-14
 <!-- @@@/auto:current-status -->
 
@@ -19,7 +19,7 @@
 <!-- @@@auto:active-documents -->
 | File | Lines | Status |
 |------|-------|--------|
-| `journal-1.md` | ~234 | Active |
+| `journal-1.md` | ~253 | Active |
 <!-- @@@/auto:active-documents -->
 
 ---
@@ -29,6 +29,7 @@
 <!-- @@@auto:session-history -->
 | # | Date | Title | Commits | Branch |
 |---|------|-------|---------|--------|
+| 12 | 2026-08-14 | 文档站部署：MkDocs + GitHub Pages workflow | - | `main` |
 | 11 | 2026-08-14 | 0.1.1 发版 + filter DSL 演进 + validator 健壮性 | - | `main` |
 | 10 | 2026-08-14 | filter 关联过滤 DSL：where(Book::authors){} | - | `main` |
 | 9 | 2026-08-13 | 文档同步与收尾（E1 + 全量验收） | `cac8822` | `main` |

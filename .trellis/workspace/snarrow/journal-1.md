@@ -232,3 +232,22 @@ FilterQueryScope 接口泛化操作符 receiver；AssociationFilterScope（子�
 ### Status
 
 [OK] **Completed**
+
+
+## Session 12: 文档站部署：MkDocs + GitHub Pages workflow
+
+**Date**: 2026-08-14
+**Task**: 文档站部署：MkDocs + GitHub Pages workflow
+**Branch**: `main`
+
+### Summary
+
+docs/ 本地构建验证通过（venv + requirements.lock，--strict 无错误）；新增 .github/workflows/docs.yml（push main 时 build + deploy-pages）；site_url 修正为 eimsound.github.io/ktor-jimmer-rest（原 github.com 域名错误），README 链接同步；已 push 触发部署。
+
+### Git Commits
+
+(No commits - planning session)
+
+### Status
+
+[OK] **Completed**
