@@ -82,22 +82,25 @@ Questions to answer:
 对关联表（如 `Book.authors`）做过滤时，必须使用隐式子查询（EXISTS 语义），
 禁止用 `joinList` / `asTableEx()` 做显式 JOIN——多对多场景会数据重复并破坏分页。
 
-1. 入口：`where(Book::authors) { ... }`（`FilterScope.where(prop, block)` 重载，
-   与 `where(...)` / `where {}` 并存，Kotlin 重载自动区分）。
-2. 块内 receiver 是 `AssociationFilterScope`，可用全部 filter 操作符
-   （`eq?`/`ilike?`/`between?` 等，receiver 已泛化为 `FilterQueryScope`）。
-3. 参数名 = 关联属性名（复数）+ 分隔符 + 属性名，如 `Book::authors` + `firstName`
-   → `authors_firstName`（`subParameterSeparator` 默认 `_`）。
-4. `AssociationFilterScope` 不能委托 `KNonNullProps`（属性引用 receiver 会解析错乱），
-   块内一律写 `table::firstName` 而不是裸 `firstName`。
-5. 新增 filter 操作符时，receiver 声明为 `FilterQueryScope<T>`，使根表与子表块都可用。
-6. 支持嵌套关联过滤：`where(Book::authors) { assoc<Author>("books") { ... } }`，
-   参数名前缀逐层累积（`authors` → `authors_books`），内层 `assoc` 返回 EXISTS 谓词。
-7. filter 操作符参数支持两种形式（重载并存，新代码优先表达式形式）：
-   - 属性引用：`ilike?(table::name)`（兼容旧代码）
+1. `where` 统一入口（`FilterScope` 成员重载，与 `where(...)` / `where {}` 并存）：
+   - 引用关联：`where(table.store) { ... }`（表对象，如 ManyToOne）
+   - 集合关联：`where(Book::authors) { ... }`（实体属性引用）
+   两者都走 EXISTS 语义。
+2. 嵌套关联过滤（块内 receiver 为 `AssociationFilterScope`）：
+   - `BookStore::books { ... }`（属性引用 invoke 操作符，推荐）
+   - `assoc(BookStore::books) { ... }`（函数式，等价）
+   参数名前缀逐层累积（`store` → `store_books` → `store_books_authors`）。
+3. 参数名 = 关联路径 + 分隔符 + 属性名（`subParameterSeparator` 默认 `_`）：
+   `where(Book::authors) { ilike?(table.firstName) }` → `?authors_firstName__start=...`。
+4. filter 操作符参数支持两种形式（重载并存，新代码优先表达式形式）：
    - 表达式：`ilike?(table.name)`、嵌套 `ilike?(table.store.name)` → `store_name`
-8. `where` 统一入口：引用关联传表对象 `where(table.store)`，集合关联传属性引用
-   `where(Book::authors)`，均走 EXISTS 语义；嵌套用 `assoc<TRelated>(关联名)`。
+   - 属性引用：`ilike?(table::name)`（兼容旧代码）
+5. `AssociationFilterScope` **不能**委托 `KNonNullProps`（会让 KSP 的 `books {}`
+   渗入作用域，块内 receiver 与操作符 receiver 错位，导致"能编译但过滤不生效"）。
+   块内一律写 `table.firstName`（表达式）而不是裸 `firstName` 或 `table::firstName`。
+6. 新增 filter 操作符时，receiver 声明为 `FilterQueryScope<T>`，使根表与子表块都可用。
+7. 操作符核心逻辑用 `xxxCore`（如 `ilikeCore`）提取，KProperty/KPropExpression
+   两个重载各一行委托，避免双版本代码漂移。
 
 ---
 
