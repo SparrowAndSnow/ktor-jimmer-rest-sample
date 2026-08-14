@@ -29,9 +29,9 @@ fun Application.configureRouting() {
 //            }
             filter {
                 where(
-                    `ilike?`(table::name),           // ?name__start=GraphQL&name__exact=...
-                    `in?`(table::edition),           // ?edition=1,2
-                    `between?`(table::price)         // ?price__ge=50&price__le=80
+                    `ilike?`(table.name),           // ?name__start=GraphQL&name__exact=...
+                    `in?`(table.edition),           // ?edition=1,2
+                    `between?`(table.price)         // ?price__ge=50&price__le=80
                 )
 
 //                where(
@@ -40,8 +40,14 @@ fun Application.configureRouting() {
 //                        select(table.books.id)
 //                    }
 //                )
+
+                where(`ilike?`(table.store.name))
+                where(table.store){
+                    `ilike?`(name)
+                    `ilike?`(website)
+                }
                 where(Book::authors) {
-                    `ilike?`(table::firstName)
+                    `ilike?`(firstName)
                 }
                 sort()                               // ?sort=price,desc&sort=id,asc
             }
@@ -104,7 +110,6 @@ fun Application.configureRouting() {
         }
     }.getAllRoutes().forEach { log.info("Route: $it") }
 }
-
 
 
 
