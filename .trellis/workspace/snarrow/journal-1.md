@@ -213,3 +213,22 @@ FilterQueryScope 接口泛化操作符 receiver；AssociationFilterScope（子�
 ### Status
 
 [OK] **Completed**
+
+
+## Session 11: 0.1.1 发版 + filter DSL 演进 + validator 健壮性
+
+**Date**: 2026-08-14
+**Task**: 0.1.1 发版 + filter DSL 演进 + validator 健壮性
+**Branch**: `main`
+
+### Summary
+
+0.1.1 发布（JITPACK 验证通过，main+tag 已 push）。filter DSL 大重构：表达式形式操作符（table.name）、where 统一入口（引用/集合）、嵌套关联过滤（BookStore::books{} 与 assoc）、作用域修复（去 KNonNullProps 委托）、rootTable 冲突检查、FilterDsl 核心逻辑提取。validator 健壮性：fail-fast 类型检查、UnloadedException 异常分流、批量逐条错误聚合。文档（README/docs/spec）同步最终约定。
+
+### Git Commits
+
+(No commits - planning session)
+
+### Status
+
+[OK] **Completed**
