@@ -91,8 +91,8 @@ Questions to answer:
 4. `AssociationFilterScope` 不能委托 `KNonNullProps`（属性引用 receiver 会解析错乱），
    块内一律写 `table::firstName` 而不是裸 `firstName`。
 5. 新增 filter 操作符时，receiver 声明为 `FilterQueryScope<T>`，使根表与子表块都可用。
-6. 当前仅支持单层关联过滤：`where(Book::authors) { ... }` 块内不能再嵌套
-   `where(Author::books) { ... }`（`AssociationFilterScope` 未提供该重载）。
+6. 支持嵌套关联过滤：`where(Book::authors) { where(Author::books) { ... } }`，
+   参数名前缀逐层累积（`authors` → `authors_books`），内层 `where` 返回 EXISTS 谓词。
 
 ---
 
