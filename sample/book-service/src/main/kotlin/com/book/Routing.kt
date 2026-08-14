@@ -42,12 +42,17 @@ fun Application.configureRouting() {
 //                )
 
                 where(`ilike?`(table.store.name))
-                where(table.store){
-                    `ilike?`(name)
-                    `ilike?`(website)
+                where(table.store) {
+                    `gt?`(table.id)
+                    BookStore::books {
+                        `ilike?`(table.name)
+                        Book::authors {
+                            `ilike?`(table.firstName)
+                        }
+                    }
                 }
                 where(Book::authors) {
-                    `ilike?`(firstName)
+                    `ilike?`(table.firstName)
                 }
                 sort()                               // ?sort=price,desc&sort=id,asc
             }
@@ -110,6 +115,5 @@ fun Application.configureRouting() {
         }
     }.getAllRoutes().forEach { log.info("Route: $it") }
 }
-
 
 
