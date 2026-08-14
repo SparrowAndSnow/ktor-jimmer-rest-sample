@@ -8,8 +8,8 @@
 
 <!-- @@@auto:current-status -->
 - **Active File**: `journal-1.md`
-- **Total Sessions**: 9
-- **Last Active**: 2026-08-13
+- **Total Sessions**: 10
+- **Last Active**: 2026-08-14
 <!-- @@@/auto:current-status -->
 
 ---
@@ -19,7 +19,7 @@
 <!-- @@@auto:active-documents -->
 | File | Lines | Status |
 |------|-------|--------|
-| `journal-1.md` | ~196 | Active |
+| `journal-1.md` | ~215 | Active |
 <!-- @@@/auto:active-documents -->
 
 ---
@@ -29,6 +29,7 @@
 <!-- @@@auto:session-history -->
 | # | Date | Title | Commits | Branch |
 |---|------|-------|---------|--------|
+| 10 | 2026-08-14 | filter 关联过滤 DSL：where(Book::authors){} | - | `main` |
 | 9 | 2026-08-13 | 文档同步与收尾（E1 + 全量验收） | `cac8822` | `main` |
 | 8 | 2026-08-13 | 自定义动作扩展点与复合主键边界 | `82d5c1e` | `main` |
 | 7 | 2026-08-13 | count/exists 端点与统一错误响应 | `6dd15a4` | `main` |

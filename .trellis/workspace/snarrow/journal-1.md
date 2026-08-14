@@ -194,3 +194,22 @@ docs-sync：README/文档站中英 quick-start/首页/sample README 同步全部
 ### Status
 
 [OK] **Completed**
+
+
+## Session 10: filter 关联过滤 DSL：where(Book::authors){}
+
+**Date**: 2026-08-14
+**Task**: filter 关联过滤 DSL：where(Book::authors){}
+**Branch**: `main`
+
+### Summary
+
+FilterQueryScope 接口泛化操作符 receiver；AssociationFilterScope（子表+call+参数名自动解析）；where(prop,block) 重载基于 KProps.exists（EXISTS 语义，规避 joinList 数据重复/分页失效）；参数名 authors_firstName；69 测试全绿；sample 更新；spec 入库；任务已归档。
+
+### Git Commits
+
+(No commits - planning session)
+
+### Status
+
+[OK] **Completed**
