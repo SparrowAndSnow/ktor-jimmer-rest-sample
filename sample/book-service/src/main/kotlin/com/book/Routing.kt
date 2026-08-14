@@ -40,7 +40,6 @@ fun Application.configureRouting() {
 //                        select(table.books.id)
 //                    }
 //                )
-
                 where(`ilike?`(table.store.name))
                 where(table.store) {
                     `gt?`(table.id)
